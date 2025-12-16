@@ -5,20 +5,28 @@ import { ListingGrid } from '@/components/listings/ListingGrid';
 import { getPublicListings } from '@/data/mockListings';
 import { Listing, ListingCategory, CATEGORY_LABELS } from '@/types/listing';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
 
 const categories: (ListingCategory | 'all')[] = ['all', 'jewelry', 'watches', 'art', 'furniture', 'collectibles', 'antiques'];
 
 export default function Index() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<ListingCategory | 'all'>('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     setListings(getPublicListings());
   }, []);
 
-  const filteredListings = selectedCategory === 'all' 
-    ? listings 
-    : listings.filter(l => l.category === selectedCategory);
+  const filteredListings = listings.filter(listing => {
+    const matchesCategory = selectedCategory === 'all' || listing.category === selectedCategory;
+    const query = searchQuery.toLowerCase().trim();
+    const matchesSearch = !query || 
+      listing.title.toLowerCase().includes(query) || 
+      listing.description.toLowerCase().includes(query);
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -40,6 +48,20 @@ export default function Index() {
 
         {/* Listings Section */}
         <section className="container mx-auto px-4 py-12 lg:py-16">
+          {/* Search Bar */}
+          <div className="max-w-md mx-auto mb-8">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search by title or description..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 font-sans"
+              />
+            </div>
+          </div>
+
           {/* Category Filter */}
           <div className="flex flex-wrap gap-2 mb-8 justify-center">
             {categories.map((cat) => (
