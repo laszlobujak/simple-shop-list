@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Listing, CATEGORY_LABELS } from '@/types/listing';
 import { Badge } from '@/components/ui/badge';
 
@@ -17,7 +17,7 @@ export function ListingCard({ listing }: ListingCardProps) {
 
   return (
     <Link 
-      to={`/listing/${listing.id}`}
+      href={`/listing/${listing.id}`}
       className="group block"
     >
       <div className="relative aspect-square overflow-hidden bg-muted rounded-sm">

@@ -1,5 +1,7 @@
+'use client';
+
 import { useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,14 +11,15 @@ import { useToast } from '@/hooks/use-toast';
 
 export default function AdminLogin() {
   const { isAuthenticated, login } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
   const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   if (isAuthenticated) {
-    return <Navigate to="/admin/dashboard" replace />;
+    router.replace('/admin/dashboard');
+    return null;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,7 +29,7 @@ export default function AdminLogin() {
     const success = login(email, password);
     
     if (success) {
-      navigate('/admin/dashboard');
+      router.push('/admin/dashboard');
     } else {
       toast({
         title: 'Invalid credentials',
@@ -83,3 +86,4 @@ export default function AdminLogin() {
     </div>
   );
 }
+

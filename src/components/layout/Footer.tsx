@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 export function Footer() {
   return (
@@ -30,7 +30,7 @@ export function Footer() {
             © {new Date().getFullYear()} Estate & Co. All rights reserved.
           </p>
           <Link 
-            to="/admin" 
+            href="/admin" 
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             Admin

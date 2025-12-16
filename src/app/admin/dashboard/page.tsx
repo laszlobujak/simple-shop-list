@@ -1,5 +1,8 @@
+'use client';
+
 import { useState, useEffect } from 'react';
-import { Navigate, Link } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { getListings, saveListing, deleteListing } from '@/data/mockListings';
 import { Listing, ListingStatus, STATUS_LABELS, CATEGORY_LABELS } from '@/types/listing';
@@ -25,17 +28,22 @@ import { useToast } from '@/hooks/use-toast';
 
 export default function AdminDashboard() {
   const { isAuthenticated, logout } = useAuth();
+  const router = useRouter();
   const { toast } = useToast();
   const [listings, setListings] = useState<Listing[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingListing, setEditingListing] = useState<Listing | null>(null);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      router.replace('/admin');
+      return;
+    }
     setListings(getListings());
-  }, []);
+  }, [isAuthenticated, router]);
 
   if (!isAuthenticated) {
-    return <Navigate to="/admin" replace />;
+    return null;
   }
 
   const handleSave = (listing: Listing) => {
@@ -93,13 +101,13 @@ export default function AdminDashboard() {
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link to="/" className="font-serif text-xl font-semibold text-foreground">
+            <Link href="/" className="font-serif text-xl font-semibold text-foreground">
               Estate & Co.
             </Link>
             <Badge variant="outline" className="font-sans text-xs">Admin</Badge>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/">
+            <Link href="/">
               <Button variant="ghost" size="sm" className="font-sans gap-2">
                 <Eye className="h-4 w-4" />
                 View Site
@@ -227,3 +235,4 @@ export default function AdminDashboard() {
     </div>
   );
 }
+

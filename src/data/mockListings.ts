@@ -85,7 +85,15 @@ export const mockListings: Listing[] = [
 
 const STORAGE_KEY = 'marketplace_listings';
 
+// Check if we're in a browser environment
+const isBrowser = typeof window !== 'undefined';
+
 export function getListings(): Listing[] {
+  if (!isBrowser) {
+    // Server-side: return mock data
+    return mockListings;
+  }
+  
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored) {
     return JSON.parse(stored);
@@ -95,6 +103,11 @@ export function getListings(): Listing[] {
 }
 
 export function saveListing(listing: Listing): void {
+  if (!isBrowser) {
+    // Server-side: no-op
+    return;
+  }
+  
   const listings = getListings();
   const index = listings.findIndex(l => l.id === listing.id);
   if (index >= 0) {
@@ -106,6 +119,11 @@ export function saveListing(listing: Listing): void {
 }
 
 export function deleteListing(id: string): void {
+  if (!isBrowser) {
+    // Server-side: no-op
+    return;
+  }
+  
   const listings = getListings().filter(l => l.id !== id);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(listings));
 }
