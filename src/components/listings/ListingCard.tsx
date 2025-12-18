@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Listing, CATEGORY_LABELS } from '@/types/listing';
 import { Badge } from '@/components/ui/badge';
 
@@ -21,10 +22,12 @@ export function ListingCard({ listing }: ListingCardProps) {
       className="group block"
     >
       <div className="relative aspect-square overflow-hidden bg-muted rounded-sm">
-        <img
+        <Image
           src={listing.photos[0]}
           alt={listing.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
         {listing.status === 'reserved' && (
           <Badge 

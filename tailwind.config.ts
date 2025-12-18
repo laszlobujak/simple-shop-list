@@ -18,8 +18,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ["Playfair Display", "serif"],
-        sans: ["DM Sans", "sans-serif"],
+        serif: ["var(--font-serif)", "Playfair Display", "serif"],
+        sans: ["var(--font-sans)", "DM Sans", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

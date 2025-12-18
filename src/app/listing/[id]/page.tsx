@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { getListingById } from '@/data/mockListings';
@@ -10,6 +11,52 @@ import { ArrowLeft } from 'lucide-react';
 
 interface ListingPageProps {
   params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({ params }: ListingPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const listing = getListingById(id);
+
+  if (!listing || (listing.status !== 'active' && listing.status !== 'reserved')) {
+    return {
+      title: 'Listing Not Found',
+      description: 'This listing is no longer available.',
+    };
+  }
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+    }).format(price);
+  };
+
+  const price = formatPrice(listing.price);
+  const category = CATEGORY_LABELS[listing.category];
+  const description = listing.description || `${category} available for ${price}`;
+
+  return {
+    title: `${listing.title} - Estate & Co.`,
+    description: description,
+    openGraph: {
+      title: listing.title,
+      description: description,
+      images: listing.photos.length > 0 ? [
+        {
+          url: listing.photos[0],
+          alt: listing.title,
+        }
+      ] : [],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: listing.title,
+      description: description,
+      images: listing.photos.length > 0 ? [listing.photos[0]] : [],
+    },
+  };
 }
 
 export default async function ListingDetailPage({ params }: ListingPageProps) {

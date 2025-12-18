@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Listing, ListingCategory, ListingStatus, CATEGORY_LABELS, STATUS_LABELS } from '@/types/listing';
 import {
   Dialog,
@@ -40,6 +41,7 @@ const defaultListing: Omit<Listing, 'id' | 'createdAt' | 'updatedAt'> = {
 export function ListingDialog({ open, onOpenChange, listing, onSave }: ListingDialogProps) {
   const [form, setForm] = useState(defaultListing);
   const [photoUrl, setPhotoUrl] = useState('');
+  const [urlError, setUrlError] = useState('');
 
   useEffect(() => {
     if (listing) {
@@ -70,9 +72,48 @@ export function ListingDialog({ open, onOpenChange, listing, onSave }: ListingDi
     onSave(savedListing);
   };
 
+  const isValidUrl = (url: string): boolean => {
+    try {
+      const urlObj = new URL(url);
+      // Only allow https URLs and common image hosting domains
+      const allowedDomains = [
+        'images.unsplash.com',
+        'unsplash.com',
+        'imgur.com',
+        'i.imgur.com',
+        'cloudinary.com',
+        'res.cloudinary.com',
+      ];
+
+      if (urlObj.protocol !== 'https:') {
+        setUrlError('Only HTTPS URLs are allowed for security');
+        return false;
+      }
+
+      const isAllowedDomain = allowedDomains.some(domain =>
+        urlObj.hostname === domain || urlObj.hostname.endsWith(`.${domain}`)
+      );
+
+      if (!isAllowedDomain) {
+        setUrlError(`Only images from allowed domains are permitted: ${allowedDomains.join(', ')}`);
+        return false;
+      }
+
+      return true;
+    } catch {
+      setUrlError('Please enter a valid URL');
+      return false;
+    }
+  };
+
   const addPhoto = () => {
-    if (photoUrl.trim()) {
-      setForm({ ...form, photos: [...form.photos, photoUrl.trim()] });
+    const trimmedUrl = photoUrl.trim();
+    if (!trimmedUrl) return;
+
+    setUrlError('');
+
+    if (isValidUrl(trimmedUrl)) {
+      setForm({ ...form, photos: [...form.photos, trimmedUrl] });
       setPhotoUrl('');
     }
   };
@@ -170,11 +211,22 @@ export function ListingDialog({ open, onOpenChange, listing, onSave }: ListingDi
           <div className="space-y-2">
             <Label className="font-sans">Photos</Label>
             <div className="flex gap-2">
-              <Input
-                value={photoUrl}
-                onChange={(e) => setPhotoUrl(e.target.value)}
-                placeholder="Enter image URL"
-              />
+              <div className="flex-1 space-y-1">
+                <Input
+                  value={photoUrl}
+                  onChange={(e) => {
+                    setPhotoUrl(e.target.value);
+                    setUrlError('');
+                  }}
+                  placeholder="Enter image URL (https://images.unsplash.com/...)"
+                  className={urlError ? 'border-destructive' : ''}
+                />
+                {urlError && (
+                  <p className="text-xs text-destructive font-sans">
+                    {urlError}
+                  </p>
+                )}
+              </div>
               <Button type="button" variant="outline" onClick={addPhoto}>
                 <Plus className="h-4 w-4" />
               </Button>
@@ -182,11 +234,13 @@ export function ListingDialog({ open, onOpenChange, listing, onSave }: ListingDi
             {form.photos.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-2">
                 {form.photos.map((photo, index) => (
-                  <div key={index} className="relative group">
-                    <img
+                  <div key={index} className="relative group w-20 h-20">
+                    <Image
                       src={photo}
                       alt={`Photo ${index + 1}`}
-                      className="w-20 h-20 object-cover rounded-sm"
+                      fill
+                      className="object-cover rounded-sm"
+                      sizes="80px"
                     />
                     <button
                       type="button"

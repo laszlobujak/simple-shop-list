@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Listing } from '@/types/listing';
 
 interface ListingPhotoGalleryProps {
@@ -12,11 +13,14 @@ export function ListingPhotoGallery({ listing }: ListingPhotoGalleryProps) {
 
   return (
     <div className="space-y-4">
-      <div className="aspect-square bg-muted rounded-sm overflow-hidden">
-        <img
+      <div className="aspect-square bg-muted rounded-sm overflow-hidden relative">
+        <Image
           src={listing.photos[selectedPhoto]}
           alt={listing.title}
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={selectedPhoto === 0}
         />
       </div>
       
@@ -26,14 +30,16 @@ export function ListingPhotoGallery({ listing }: ListingPhotoGalleryProps) {
             <button
               key={index}
               onClick={() => setSelectedPhoto(index)}
-              className={`w-20 h-20 rounded-sm overflow-hidden border-2 transition-colors ${
+              className={`w-20 h-20 rounded-sm overflow-hidden border-2 transition-colors relative ${
                 selectedPhoto === index ? 'border-accent' : 'border-transparent'
               }`}
             >
-              <img
+              <Image
                 src={photo}
                 alt={`${listing.title} ${index + 1}`}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                sizes="80px"
               />
             </button>
           ))}
