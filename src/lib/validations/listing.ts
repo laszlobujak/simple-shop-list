@@ -47,7 +47,7 @@ const imageUrlSchema = z.string().url().refine(
 export const createListingSchema = z.object({
   title: z.string().min(1, 'Title is required').max(200, 'Title must be less than 200 characters'),
   category: listingCategorySchema,
-  price: z.coerce.number()
+  price: z.number()
     .positive('Price must be greater than 0')
     .max(10000000, 'Price is too high'),
   description: z.string().max(5000, 'Description must be less than 5000 characters').default(''),
@@ -59,7 +59,7 @@ export const createListingSchema = z.object({
 export const updateListingSchema = z.object({
   title: z.string().min(1, 'Title is required').max(200, 'Title must be less than 200 characters').optional(),
   category: listingCategorySchema.optional(),
-  price: z.coerce.number().positive('Price must be greater than 0').max(10000000, 'Price is too high').optional(),
+  price: z.number().positive('Price must be greater than 0').max(10000000, 'Price is too high').optional(),
   description: z.string().max(5000, 'Description must be less than 5000 characters').optional(),
   photos: z.array(imageUrlSchema).max(20, 'Maximum 20 photos allowed').optional(),
   status: listingStatusSchema.optional(),
