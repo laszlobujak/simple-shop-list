@@ -1,44 +1,57 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, ReactNode } from 'react';
+import { useSession, signIn, signOut } from '@/lib/auth-client';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (email: string, password: string) => boolean;
-  logout: () => void;
+  user: { id: string; email: string; name: string | null } | null;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const ADMIN_CREDENTIALS = {
-  email: 'admin@shop.com',
-  password: 'admin123',
-};
-
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { data: session, isPending } = useSession();
 
-  useEffect(() => {
-    const stored = localStorage.getItem('admin_authenticated');
-    setIsAuthenticated(stored === 'true');
-  }, []);
+  const login = async (email: string, password: string) => {
+    try {
+      const result = await signIn.email({
+        email,
+        password,
+      });
 
-  const login = (email: string, password: string): boolean => {
-    if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
-      setIsAuthenticated(true);
-      localStorage.setItem('admin_authenticated', 'true');
-      return true;
+      if (result.error) {
+        return { success: false, error: result.error.message };
+      }
+
+      return { success: true };
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'An error occurred during login' 
+      };
     }
-    return false;
   };
 
-  const logout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('admin_authenticated');
+  const logout = async () => {
+    await signOut();
+  };
+
+  const value: AuthContextType = {
+    isAuthenticated: !!session?.user && !isPending,
+    user: session?.user ? {
+      id: session.user.id,
+      email: session.user.email,
+      name: session.user.name,
+    } : null,
+    login,
+    logout,
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

@@ -113,7 +113,15 @@ export default function AdminDashboard() {
                 View Site
               </Button>
             </Link>
-            <Button variant="ghost" size="sm" onClick={logout} className="font-sans gap-2">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={async () => {
+                await logout();
+                router.push('/admin');
+              }} 
+              className="font-sans gap-2"
+            >
               <LogOut className="h-4 w-4" />
               Logout
             </Button>

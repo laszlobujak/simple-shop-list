@@ -30,6 +30,9 @@ export const env = createEnv({
     POSTGRES_PRISMA_URL: z.url().optional(),
     // Neon Auth
     STACK_SECRET_SERVER_KEY: z.string().optional(),
+    // Better Auth
+    BETTER_AUTH_SECRET: z.string().min(32),
+    BETTER_AUTH_URL: z.string().url().optional(),
   },
 
   /**
@@ -40,6 +43,7 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_STACK_PROJECT_ID: z.string().optional(),
     NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY: z.string().optional(),
+    NEXT_PUBLIC_BETTER_AUTH_URL: z.string().url().optional(),
   },
 
   /**
@@ -68,9 +72,13 @@ export const env = createEnv({
     POSTGRES_PRISMA_URL: process.env.POSTGRES_PRISMA_URL,
     // Neon Auth
     STACK_SECRET_SERVER_KEY: process.env.STACK_SECRET_SERVER_KEY,
+    // Better Auth
+    BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
+    BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
     // Client-side
     NEXT_PUBLIC_STACK_PROJECT_ID: process.env.NEXT_PUBLIC_STACK_PROJECT_ID,
     NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY: process.env.NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY,
+    NEXT_PUBLIC_BETTER_AUTH_URL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
   },
   /**
    * Run `build` or `dev` with SKIP_ENV_VALIDATION to skip env validation. This is especially
