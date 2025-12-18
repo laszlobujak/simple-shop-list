@@ -50,9 +50,9 @@ export const createListingSchema = z.object({
   price: z.number()
     .positive('Price must be greater than 0')
     .max(10000000, 'Price is too high'),
-  description: z.string().max(5000, 'Description must be less than 5000 characters').default(''),
-  photos: z.array(imageUrlSchema).max(20, 'Maximum 20 photos allowed').default([]),
-  status: listingStatusSchema.default('draft'),
+  description: z.string().max(5000, 'Description must be less than 5000 characters'),
+  photos: z.array(imageUrlSchema).max(20, 'Maximum 20 photos allowed'),
+  status: listingStatusSchema,
 });
 
 // Update listing schema (all fields optional except required ones)

@@ -147,7 +147,7 @@ export function ListingDialog({ open, onOpenChange, listing, onSave, isSaving = 
                   />
                   {field.state.meta.errors.length > 0 && (
                     <p className="text-sm font-medium text-destructive">
-                      {field.state.meta.errors.map((e) => typeof e === 'string' ? e : e?.message).join(', ')}
+                      {field.state.meta.errors.map((e) => typeof e === 'string' ? e : (e as { message?: string })?.message ?? String(e)).join(', ')}
                     </p>
                   )}
                 </div>
@@ -169,7 +169,7 @@ export function ListingDialog({ open, onOpenChange, listing, onSave, isSaving = 
                   />
                   {field.state.meta.errors.length > 0 && (
                     <p className="text-sm font-medium text-destructive">
-                      {field.state.meta.errors.map((e) => typeof e === 'string' ? e : e?.message).join(', ')}
+                      {field.state.meta.errors.map((e) => typeof e === 'string' ? e : (e as { message?: string })?.message ?? String(e)).join(', ')}
                     </p>
                   )}
                 </div>
@@ -200,7 +200,7 @@ export function ListingDialog({ open, onOpenChange, listing, onSave, isSaving = 
                   </Select>
                   {field.state.meta.errors.length > 0 && (
                     <p className="text-sm font-medium text-destructive">
-                      {field.state.meta.errors.map((e) => typeof e === 'string' ? e : e?.message).join(', ')}
+                      {field.state.meta.errors.map((e) => typeof e === 'string' ? e : (e as { message?: string })?.message ?? String(e)).join(', ')}
                     </p>
                   )}
                 </div>
@@ -229,7 +229,7 @@ export function ListingDialog({ open, onOpenChange, listing, onSave, isSaving = 
                   </Select>
                   {field.state.meta.errors.length > 0 && (
                     <p className="text-sm font-medium text-destructive">
-                      {field.state.meta.errors.map((e) => typeof e === 'string' ? e : e?.message).join(', ')}
+                      {field.state.meta.errors.map((e) => typeof e === 'string' ? e : (e as { message?: string })?.message ?? String(e)).join(', ')}
                     </p>
                   )}
                 </div>
@@ -252,7 +252,7 @@ export function ListingDialog({ open, onOpenChange, listing, onSave, isSaving = 
                 />
                 {field.state.meta.errors.length > 0 && (
                   <p className="text-sm font-medium text-destructive">
-                    {field.state.meta.errors.map((e) => typeof e === 'string' ? e : e?.message).join(', ')}
+                    {field.state.meta.errors.map((e) => typeof e === 'string' ? e : (e as { message?: string })?.message ?? String(e)).join(', ')}
                   </p>
                 )}
               </div>
@@ -312,7 +312,7 @@ export function ListingDialog({ open, onOpenChange, listing, onSave, isSaving = 
                   )}
                   {field.state.meta.errors.length > 0 && (
                     <p className="text-sm font-medium text-destructive">
-                      {field.state.meta.errors.map((e) => typeof e === 'string' ? e : e?.message).join(', ')}
+                      {field.state.meta.errors.map((e) => typeof e === 'string' ? e : (e as { message?: string })?.message ?? String(e)).join(', ')}
                     </p>
                   )}
                 </>
