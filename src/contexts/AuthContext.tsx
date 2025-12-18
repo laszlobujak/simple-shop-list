@@ -5,6 +5,7 @@ import { useSession, signIn, signOut } from '@/lib/auth-client';
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  isLoading: boolean;
   user: { id: string; email: string; name: string | null } | null;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
@@ -41,6 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const value: AuthContextType = {
     isAuthenticated: !!session?.user && !isPending,
+    isLoading: isPending,
     user: session?.user ? {
       id: session.user.id,
       email: session.user.email,

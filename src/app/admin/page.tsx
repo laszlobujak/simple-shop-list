@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 
 export default function AdminLogin() {
-  const { isAuthenticated, login } = useAuth();
+  const { isAuthenticated, isLoading, login } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [email, setEmail] = useState('');
@@ -26,6 +26,14 @@ export default function AdminLogin() {
       router.replace('/admin/dashboard');
     }
   }, [isAuthenticated, router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   if (isAuthenticated) {
     return null;

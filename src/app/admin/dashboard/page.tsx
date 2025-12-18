@@ -27,7 +27,7 @@ import { Plus, MoreHorizontal, Pencil, Trash2, LogOut, Eye } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast';
 
 export default function AdminDashboard() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, isLoading, logout } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [listings, setListings] = useState<Listing[]>([]);
@@ -35,12 +35,22 @@ export default function AdminDashboard() {
   const [editingListing, setEditingListing] = useState<Listing | null>(null);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isLoading && !isAuthenticated) {
       router.replace('/admin');
       return;
     }
-    setListings(getListings());
-  }, [isAuthenticated, router]);
+    if (isAuthenticated) {
+      setListings(getListings());
+    }
+  }, [isAuthenticated, isLoading, router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return null;

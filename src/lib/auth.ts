@@ -3,6 +3,19 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from './db';
 import { env } from '@/env.mjs';
 
+const getBaseURL = () => {
+  // Production: custom domain (set BETTER_AUTH_URL in Vercel production env)
+  if (env.BETTER_AUTH_URL) {
+    return env.BETTER_AUTH_URL;
+  }
+  // Vercel PR previews: auto-generated URL
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  // Local development
+  return 'http://localhost:3000';
+};
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'pg',
@@ -11,7 +24,7 @@ export const auth = betterAuth({
     enabled: true,
   },
   secret: env.BETTER_AUTH_SECRET,
-  baseURL: env.BETTER_AUTH_URL || 'http://localhost:3000',
+  baseURL: getBaseURL(),
   basePath: '/api/auth',
 });
 
