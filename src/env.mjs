@@ -32,7 +32,7 @@ export const env = createEnv({
     STACK_SECRET_SERVER_KEY: z.string().optional(),
     // Better Auth
     BETTER_AUTH_SECRET: z.string().min(32),
-    BETTER_AUTH_URL: z.string().url().optional(),
+    BETTER_AUTH_URL: z.url().optional(),
   },
 
   /**
@@ -43,7 +43,7 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_STACK_PROJECT_ID: z.string().optional(),
     NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY: z.string().optional(),
-    NEXT_PUBLIC_BETTER_AUTH_URL: z.string().url().optional(),
+    NEXT_PUBLIC_BETTER_AUTH_URL: z.url().optional(),
   },
 
   /**
