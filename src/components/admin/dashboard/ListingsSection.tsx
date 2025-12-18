@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { getListings, saveListing, deleteListing } from '@/data/mockListings';
+import { useListings, useCreateListing, useUpdateListing, useDeleteListing } from '@/hooks/use-listings';
 import { Listing, ListingStatus, STATUS_LABELS, CATEGORY_LABELS } from '@/types/listing';
 import { Button } from '@/components/ui/button';
 import {
@@ -29,44 +29,89 @@ function formatPrice(price: number) {
 
 export function ListingsSection() {
   const { toast } = useToast();
-  const [listings, setListings] = useState<Listing[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingListing, setEditingListing] = useState<Listing | null>(null);
 
-  useEffect(() => {
-    setListings(getListings());
-  }, []);
+  // React Query hooks
+  const { data: listings = [], isLoading, error } = useListings();
+  const createMutation = useCreateListing();
+  const updateMutation = useUpdateListing();
+  const deleteMutation = useDeleteListing();
 
-  const handleSave = (listing: Listing) => {
-    saveListing(listing);
-    setListings(getListings());
-    setDialogOpen(false);
-    setEditingListing(null);
+  // Show error toast if query fails
+  if (error) {
     toast({
-      title: editingListing ? 'Listing updated' : 'Listing created',
-      description: `"${listing.title}" has been saved.`,
+      title: 'Error',
+      description: 'Failed to load listings',
+      variant: 'destructive',
     });
-  };
+  }
 
-  const handleDelete = (listing: Listing) => {
-    if (confirm(`Delete "${listing.title}"?`)) {
-      deleteListing(listing.id);
-      setListings(getListings());
+  const handleSave = async (listing: Listing) => {
+    try {
+      if (editingListing) {
+        await updateMutation.mutateAsync({
+          id: listing.id,
+          data: listing,
+        });
+        toast({
+          title: 'Listing updated',
+          description: `"${listing.title}" has been saved.`,
+        });
+      } else {
+        await createMutation.mutateAsync(listing);
+        toast({
+          title: 'Listing created',
+          description: `"${listing.title}" has been created.`,
+        });
+      }
+
+      setDialogOpen(false);
+      setEditingListing(null);
+    } catch (error) {
       toast({
-        title: 'Listing deleted',
-        description: `"${listing.title}" has been removed.`,
+        title: 'Error',
+        description: 'Failed to save listing',
+        variant: 'destructive',
       });
     }
   };
 
-  const handleStatusChange = (listing: Listing, status: ListingStatus) => {
-    const updated = { ...listing, status, updatedAt: new Date().toISOString() };
-    saveListing(updated);
-    setListings(getListings());
-    toast({
-      title: 'Status updated',
-      description: `"${listing.title}" is now ${STATUS_LABELS[status]}.`,
-    });
+  const handleDelete = async (listing: Listing) => {
+    if (confirm(`Delete "${listing.title}"?`)) {
+      try {
+        await deleteMutation.mutateAsync(listing.id);
+        toast({
+          title: 'Listing deleted',
+          description: `"${listing.title}" has been removed.`,
+        });
+      } catch (error) {
+        toast({
+          title: 'Error',
+          description: 'Failed to delete listing',
+          variant: 'destructive',
+        });
+      }
+    }
+  };
+
+  const handleStatusChange = async (listing: Listing, status: ListingStatus) => {
+    try {
+      await updateMutation.mutateAsync({
+        id: listing.id,
+        data: { ...listing, status },
+      });
+      toast({
+        title: 'Status updated',
+        description: `"${listing.title}" is now ${STATUS_LABELS[status]}.`,
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to update status',
+        variant: 'destructive',
+      });
+    }
   };
 
   const handleEdit = (listing: Listing) => {
@@ -93,52 +138,81 @@ export function ListingsSection() {
       </div>
 
       <div className="border border-border rounded-lg overflow-hidden bg-card">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="font-sans">Item</TableHead>
-              <TableHead className="font-sans">Category</TableHead>
-              <TableHead className="font-sans">Price</TableHead>
-              <TableHead className="font-sans">Status</TableHead>
-              <TableHead className="font-sans w-[80px]">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {listings.map((listing) => (
-              <TableRow key={listing.id}>
-                <TableCell>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-sm overflow-hidden bg-muted flex-shrink-0 relative">
-                      <Image
-                        src={listing.photos[0]}
-                        alt={listing.title}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <span className="font-sans font-medium">{listing.title}</span>
-                  </div>
-                </TableCell>
-                <TableCell className="font-sans text-muted-foreground">
-                  {CATEGORY_LABELS[listing.category]}
-                </TableCell>
-                <TableCell className="font-sans">
-                  {formatPrice(listing.price)}
-                </TableCell>
-                <TableCell>
-                  <StatusDropdown listing={listing} onStatusChange={handleStatusChange} />
-                </TableCell>
-                <TableCell>
-                  <ActionsDropdown 
-                    listing={listing} 
-                    onEdit={handleEdit} 
-                    onDelete={handleDelete} 
-                  />
-                </TableCell>
+        {isLoading ? (
+          <div className="p-8 text-center">
+            <p className="text-muted-foreground">Loading listings...</p>
+          </div>
+        ) : listings.length === 0 ? (
+          <div className="p-8 text-center">
+            <p className="text-muted-foreground">No listings yet. Create your first listing!</p>
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="font-sans">Item</TableHead>
+                <TableHead className="font-sans">Category</TableHead>
+                <TableHead className="font-sans">Price</TableHead>
+                <TableHead className="font-sans">Status</TableHead>
+                <TableHead className="font-sans w-[80px]">Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {[...listings].sort((a, b) => a.title.localeCompare(b.title)).map((listing) => {
+                const isDeleting = deleteMutation.isPending && deleteMutation.variables === listing.id;
+                const isUpdating = updateMutation.isPending && updateMutation.variables?.id === listing.id;
+
+                return (
+                  <TableRow
+                    key={listing.id}
+                    className={`
+                      transition-all duration-200
+                      ${isDeleting ? 'opacity-50 bg-destructive/5' : ''}
+                      ${isUpdating ? 'bg-accent/5' : ''}
+                    `}
+                  >
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-sm overflow-hidden bg-muted flex-shrink-0 relative">
+                          {listing.photos[0] && (
+                            <Image
+                              src={listing.photos[0]}
+                              alt={listing.title}
+                              fill
+                              className="object-cover"
+                            />
+                          )}
+                        </div>
+                        <span className="font-sans font-medium">{listing.title}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-sans text-muted-foreground">
+                      {CATEGORY_LABELS[listing.category]}
+                    </TableCell>
+                    <TableCell className="font-sans">
+                      {formatPrice(listing.price)}
+                    </TableCell>
+                    <TableCell>
+                      <StatusDropdown
+                        listing={listing}
+                        onStatusChange={handleStatusChange}
+                        disabled={isDeleting || isUpdating}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <ActionsDropdown
+                        listing={listing}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                        disabled={isDeleting || isUpdating}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        )}
       </div>
 
       <ListingDialog
@@ -146,6 +220,7 @@ export function ListingsSection() {
         onOpenChange={setDialogOpen}
         listing={editingListing}
         onSave={handleSave}
+        isSaving={createMutation.isPending || updateMutation.isPending}
       />
     </main>
   );

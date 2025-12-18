@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { getListingById } from '@/data/mockListings';
+import { getListingById } from '@/lib/listings-server';
 import { CATEGORY_LABELS } from '@/types/listing';
 import { ListingPhotoGallery } from '@/components/listings/ListingPhotoGallery';
 import { ListingDetails } from '@/components/listings/ListingDetails';
@@ -15,7 +15,7 @@ interface ListingPageProps {
 
 export async function generateMetadata({ params }: ListingPageProps): Promise<Metadata> {
   const { id } = await params;
-  const listing = getListingById(id);
+  const listing = await getListingById(id);
 
   if (!listing || (listing.status !== 'active' && listing.status !== 'reserved')) {
     return {
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: ListingPageProps): Promise<Me
 
 export default async function ListingDetailPage({ params }: ListingPageProps) {
   const { id } = await params;
-  const listing = getListingById(id);
+  const listing = await getListingById(id);
 
   if (!listing || (listing.status !== 'active' && listing.status !== 'reserved')) {
     notFound();

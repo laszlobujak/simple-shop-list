@@ -14,13 +14,14 @@ interface ActionsDropdownProps {
   listing: Listing;
   onEdit: (listing: Listing) => void;
   onDelete: (listing: Listing) => void;
+  disabled?: boolean;
 }
 
-export function ActionsDropdown({ listing, onEdit, onDelete }: ActionsDropdownProps) {
+export function ActionsDropdown({ listing, onEdit, onDelete, disabled }: ActionsDropdownProps) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
+      <DropdownMenuTrigger asChild disabled={disabled}>
+        <Button variant="ghost" size="icon" className="h-8 w-8" disabled={disabled}>
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>

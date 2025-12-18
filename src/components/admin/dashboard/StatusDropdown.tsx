@@ -13,6 +13,7 @@ import {
 interface StatusDropdownProps {
   listing: Listing;
   onStatusChange: (listing: Listing, status: ListingStatus) => void;
+  disabled?: boolean;
 }
 
 function getStatusVariant(status: ListingStatus) {
@@ -24,12 +25,12 @@ function getStatusVariant(status: ListingStatus) {
   }
 }
 
-export function StatusDropdown({ listing, onStatusChange }: StatusDropdownProps) {
+export function StatusDropdown({ listing, onStatusChange, disabled }: StatusDropdownProps) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="h-auto p-0">
-          <Badge variant={getStatusVariant(listing.status)} className="font-sans text-xs cursor-pointer">
+      <DropdownMenuTrigger asChild disabled={disabled}>
+        <Button variant="ghost" size="sm" className="h-auto p-0" disabled={disabled}>
+          <Badge variant={getStatusVariant(listing.status)} className={`font-sans text-xs ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}>
             {STATUS_LABELS[listing.status]}
           </Badge>
         </Button>

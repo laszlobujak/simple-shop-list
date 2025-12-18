@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Listing, ListingCategory, ListingStatus, CATEGORY_LABELS, STATUS_LABELS } from '@/types/listing';
+import { createListingSchema, updateListingSchema, CreateListingInput, UpdateListingInput } from '@/lib/validations/listing';
 import {
   Dialog,
   DialogContent,
@@ -20,6 +23,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { X, Plus } from 'lucide-react';
 
 interface ListingDialogProps {
@@ -27,9 +38,10 @@ interface ListingDialogProps {
   onOpenChange: (open: boolean) => void;
   listing: Listing | null;
   onSave: (listing: Listing) => void;
+  isSaving?: boolean;
 }
 
-const defaultListing: Omit<Listing, 'id' | 'createdAt' | 'updatedAt'> = {
+const defaultListing: CreateListingInput = {
   title: '',
   category: 'other',
   price: 0,
@@ -38,14 +50,20 @@ const defaultListing: Omit<Listing, 'id' | 'createdAt' | 'updatedAt'> = {
   status: 'draft',
 };
 
-export function ListingDialog({ open, onOpenChange, listing, onSave }: ListingDialogProps) {
-  const [form, setForm] = useState(defaultListing);
+export function ListingDialog({ open, onOpenChange, listing, onSave, isSaving = false }: ListingDialogProps) {
   const [photoUrl, setPhotoUrl] = useState('');
   const [urlError, setUrlError] = useState('');
 
+  const form = useForm<CreateListingInput | UpdateListingInput>({
+    resolver: zodResolver(listing ? updateListingSchema : createListingSchema),
+    defaultValues: defaultListing,
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
+  });
+
   useEffect(() => {
     if (listing) {
-      setForm({
+      form.reset({
         title: listing.title,
         category: listing.category,
         price: listing.price,
@@ -54,56 +72,34 @@ export function ListingDialog({ open, onOpenChange, listing, onSave }: ListingDi
         status: listing.status,
       });
     } else {
-      setForm(defaultListing);
+      form.reset(defaultListing);
     }
-  }, [listing, open]);
+  }, [listing, open, form]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  const handleSubmit = async (data: CreateListingInput | UpdateListingInput) => {
+    // Validation already passed if we reach here
     const now = new Date().toISOString();
-    const savedListing: Listing = {
-      id: listing?.id || crypto.randomUUID(),
-      ...form,
-      createdAt: listing?.createdAt || now,
-      updatedAt: now,
-    };
-    
+
+    // When editing, merge with existing listing data
+    // When creating, use all data from form
+    const savedListing: Listing = listing
+      ? {
+          ...listing,
+          ...data,
+          updatedAt: now,
+        }
+      : {
+          id: crypto.randomUUID(),
+          ...(data as CreateListingInput),
+          createdAt: now,
+          updatedAt: now,
+        };
+
     onSave(savedListing);
   };
 
-  const isValidUrl = (url: string): boolean => {
-    try {
-      const urlObj = new URL(url);
-      // Only allow https URLs and common image hosting domains
-      const allowedDomains = [
-        'images.unsplash.com',
-        'unsplash.com',
-        'imgur.com',
-        'i.imgur.com',
-        'cloudinary.com',
-        'res.cloudinary.com',
-      ];
-
-      if (urlObj.protocol !== 'https:') {
-        setUrlError('Only HTTPS URLs are allowed for security');
-        return false;
-      }
-
-      const isAllowedDomain = allowedDomains.some(domain =>
-        urlObj.hostname === domain || urlObj.hostname.endsWith(`.${domain}`)
-      );
-
-      if (!isAllowedDomain) {
-        setUrlError(`Only images from allowed domains are permitted: ${allowedDomains.join(', ')}`);
-        return false;
-      }
-
-      return true;
-    } catch {
-      setUrlError('Please enter a valid URL');
-      return false;
-    }
+  const handleInvalidSubmit = (errors: any) => {
+    console.log('Form validation errors:', errors);
   };
 
   const addPhoto = () => {
@@ -112,14 +108,25 @@ export function ListingDialog({ open, onOpenChange, listing, onSave }: ListingDi
 
     setUrlError('');
 
-    if (isValidUrl(trimmedUrl)) {
-      setForm({ ...form, photos: [...form.photos, trimmedUrl] });
+    const currentPhotos = form.getValues('photos') || [];
+
+    // Add photo and let form validation handle it
+    const newPhotos = [...currentPhotos, trimmedUrl];
+
+    try {
+      // Validate the entire photos array
+      createListingSchema.shape.photos.parse(newPhotos);
+      form.setValue('photos', newPhotos, { shouldValidate: true });
       setPhotoUrl('');
+    } catch (error: any) {
+      const zodError = error.issues?.[0];
+      setUrlError(zodError?.message || 'Invalid image URL');
     }
   };
 
   const removePhoto = (index: number) => {
-    setForm({ ...form, photos: form.photos.filter((_, i) => i !== index) });
+    const currentPhotos = form.getValues('photos') || [];
+    form.setValue('photos', currentPhotos.filter((_, i) => i !== index), { shouldValidate: true });
   };
 
   return (
@@ -131,139 +138,191 @@ export function ListingDialog({ open, onOpenChange, listing, onSave }: ListingDi
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="title" className="font-sans">Title</Label>
-              <Input
-                id="title"
-                value={form.title}
-                onChange={(e) => setForm({ ...form, title: e.target.value })}
-                placeholder="Item title"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="price" className="font-sans">Price</Label>
-              <Input
-                id="price"
-                type="number"
-                value={form.price || ''}
-                onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
-                placeholder="0"
-                min="0"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="category" className="font-sans">Category</Label>
-              <Select
-                value={form.category}
-                onValueChange={(value: ListingCategory) => setForm({ ...form, category: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {(Object.keys(CATEGORY_LABELS) as ListingCategory[]).map((cat) => (
-                    <SelectItem key={cat} value={cat} className="font-sans">
-                      {CATEGORY_LABELS[cat]}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="status" className="font-sans">Status</Label>
-              <Select
-                value={form.status}
-                onValueChange={(value: ListingStatus) => setForm({ ...form, status: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {(Object.keys(STATUS_LABELS) as ListingStatus[]).map((status) => (
-                    <SelectItem key={status} value={status} className="font-sans">
-                      {STATUS_LABELS[status]}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="description" className="font-sans">Description</Label>
-            <Textarea
-              id="description"
-              value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
-              placeholder="Describe the item..."
-              rows={4}
-            />
-          </div>
-
-          {/* Photos */}
-          <div className="space-y-2">
-            <Label className="font-sans">Photos</Label>
-            <div className="flex gap-2">
-              <div className="flex-1 space-y-1">
-                <Input
-                  value={photoUrl}
-                  onChange={(e) => {
-                    setPhotoUrl(e.target.value);
-                    setUrlError('');
-                  }}
-                  placeholder="Enter image URL (https://images.unsplash.com/...)"
-                  className={urlError ? 'border-destructive' : ''}
-                />
-                {urlError && (
-                  <p className="text-xs text-destructive font-sans">
-                    {urlError}
-                  </p>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit, handleInvalidSubmit)} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-sans">Title</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Item title"
+                        disabled={isSaving}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
+              />
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-sans">Price</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="Enter price"
+                        disabled={isSaving}
+                        value={field.value || ''}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          field.onChange(value === '' ? 0 : Number(value));
+                        }}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        ref={field.ref}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-sans">Category</FormLabel>
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={isSaving}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {(Object.keys(CATEGORY_LABELS) as ListingCategory[]).map((cat) => (
+                          <SelectItem key={cat} value={cat} className="font-sans">
+                            {CATEGORY_LABELS[cat]}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-sans">Status</FormLabel>
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={isSaving}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {(Object.keys(STATUS_LABELS) as ListingStatus[]).map((status) => (
+                          <SelectItem key={status} value={status} className="font-sans">
+                            {STATUS_LABELS[status]}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-sans">Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      placeholder="Describe the item..."
+                      rows={4}
+                      disabled={isSaving}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Photos */}
+            <div className="space-y-2">
+              <Label className="font-sans">Photos</Label>
+              <div className="flex gap-2">
+                <div className="flex-1 space-y-1">
+                  <Input
+                    value={photoUrl}
+                    onChange={(e) => {
+                      setPhotoUrl(e.target.value);
+                      setUrlError('');
+                    }}
+                    placeholder="Enter image URL (https://images.unsplash.com/...)"
+                    className={urlError ? 'border-destructive' : ''}
+                    disabled={isSaving}
+                  />
+                  {urlError && (
+                    <p className="text-xs text-destructive font-sans">
+                      {urlError}
+                    </p>
+                  )}
+                </div>
+                <Button type="button" variant="outline" onClick={addPhoto} disabled={isSaving}>
+                  <Plus className="h-4 w-4" />
+                </Button>
               </div>
-              <Button type="button" variant="outline" onClick={addPhoto}>
-                <Plus className="h-4 w-4" />
+              {(form.watch('photos') || []).length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {(form.watch('photos') || []).map((photo, index) => (
+                    <div key={index} className="relative group w-20 h-20">
+                      <Image
+                        src={photo}
+                        alt={`Photo ${index + 1}`}
+                        fill
+                        className="object-cover rounded-sm"
+                        sizes="80px"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removePhoto(index)}
+                        className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        disabled={isSaving}
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end gap-2 pt-4">
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isSaving}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSaving}>
+                {isSaving ? 'Saving...' : listing ? 'Save Changes' : 'Create Listing'}
               </Button>
             </div>
-            {form.photos.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-2">
-                {form.photos.map((photo, index) => (
-                  <div key={index} className="relative group w-20 h-20">
-                    <Image
-                      src={photo}
-                      alt={`Photo ${index + 1}`}
-                      fill
-                      className="object-cover rounded-sm"
-                      sizes="80px"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removePhoto(index)}
-                      className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="flex justify-end gap-2 pt-4">
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
-            <Button type="submit">
-              {listing ? 'Save Changes' : 'Create Listing'}
-            </Button>
-          </div>
-        </form>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
