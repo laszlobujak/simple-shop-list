@@ -1,21 +1,28 @@
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 export async function revalidateListings() {
-  // Revalidate homepage
-  revalidatePath('/', 'page');
+  // Invalidate cache tags for instant updates with React 19 "use cache"
+  // Using 'max' profile to invalidate immediately
+  revalidateTag('all-listings', 'max');
+  revalidateTag('public-listings', 'max');
 
-  // Revalidate all listing detail pages
+  // Also revalidate paths for page-level cache
+  revalidatePath('/', 'page');
   revalidatePath('/listing/[id]', 'page');
 
-  console.log('[Cache] Revalidated homepage and listing pages');
+  console.log('[Cache] Revalidated all listings via tags and paths');
 }
 
 export async function revalidateListingById(id: string) {
-  // Revalidate specific listing page
-  revalidatePath(`/listing/${id}`, 'page');
+  // Invalidate cache tag for this specific listing
+  revalidateTag(`listing-${id}`, 'max');
 
-  // Also revalidate homepage (listing might appear there)
+  // Also invalidate public listings since this listing might appear there
+  revalidateTag('public-listings', 'max');
+
+  // Revalidate paths for page-level cache
+  revalidatePath(`/listing/${id}`, 'page');
   revalidatePath('/', 'page');
 
-  console.log(`[Cache] Revalidated listing ${id} and homepage`);
+  console.log(`[Cache] Revalidated listing ${id} via tags and paths`);
 }
