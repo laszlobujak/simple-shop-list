@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { useListings, useCreateListing, useUpdateListing, useDeleteListing } from '@/hooks/use-listings';
+import { useAdminListings, useAdminCreateListing, useAdminUpdateListing, useAdminDeleteListing } from '@/hooks/use-admin-listings';
 import { Listing, ListingStatus, STATUS_LABELS, CATEGORY_LABELS } from '@/types/listing';
 import { Button } from '@/components/ui/button';
 import {
@@ -33,10 +33,10 @@ export function ListingsSection() {
   const [editingListing, setEditingListing] = useState<Listing | null>(null);
 
   // React Query hooks
-  const { data: listings = [], isLoading, error } = useListings();
-  const createMutation = useCreateListing();
-  const updateMutation = useUpdateListing();
-  const deleteMutation = useDeleteListing();
+  const { data: listings = [], isLoading, error } = useAdminListings();
+  const createMutation = useAdminCreateListing();
+  const updateMutation = useAdminUpdateListing();
+  const deleteMutation = useAdminDeleteListing();
 
   // Show error toast if query fails
   if (error) {
