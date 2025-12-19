@@ -14,16 +14,17 @@ interface ListingPageProps {
   params: Promise<{ id: string }>;
 }
 
+// Enable ISR - pages regenerate every 60 seconds
+export const revalidate = 60;
+
 // Generate static params for all active/reserved listings at build time
 export async function generateStaticParams() {
   const listings = await getPublicListingsCached();
 
-  // Pre-render top 50 most recent listings
-  return listings
-    .slice(0, 50)
-    .map((listing) => ({
-      id: listing.id,
-    }));
+  // Pre-render ALL listings (not just top 50)
+  return listings.map((listing) => ({
+    id: listing.id,
+  }));
 }
 
 // Use React cache() to deduplicate getListingByIdCached calls within a single request

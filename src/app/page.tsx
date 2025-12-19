@@ -4,6 +4,9 @@ import { getPublicListingsCached } from '@/lib/listings-cached';
 import { ListingSearch } from '@/components/listings/ListingSearch';
 import { Button } from '@/components/ui/button';
 
+// Enable ISR - page regenerates every 60 seconds
+export const revalidate = 60;
+
 export default async function HomePage() {
   const listings = await getPublicListingsCached();
 
