@@ -5,6 +5,7 @@ import { listings } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { validateUpdateListing } from '@/lib/validations/listing';
 import { revalidateListingById } from '@/lib/revalidate';
+import { getVercelBlobUrls } from '@/lib/blob-utils';
 
 // GET single listing by ID
 export async function GET(
@@ -105,23 +106,44 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params;
-
-    const deletedListing = await db.delete(listings)
-      .where(eq(listings.id, id))
-      .returning();
-
-    if (deletedListing.length === 0) {
-      return NextResponse.json(
-        { error: 'Listing not found' },
-        { status: 404 }
-      );
-    }
-
-    // Revalidate caches after deleting
-    await revalidateListingById(id);
-
-    return NextResponse.json({ success: true });
+        const { id } = await params;
+    
+        // Get the listing first to extract blob URLs
+        const listing = await db.select().from(listings).where(eq(listings.id, id)).limit(1);
+    
+        if (listing.length === 0) {
+          return NextResponse.json(
+            { error: 'Listing not found' },
+            { status: 404 }
+          );
+        }
+    
+        // Delete associated blobs if any
+        const blobUrls = getVercelBlobUrls(listing[0].photos || []);
+        if (blobUrls.length > 0) {
+          try {
+            const deleteResponse = await fetch(`${request.nextUrl.origin}/api/upload/delete`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ urls: blobUrls }),
+            });
+            if (!deleteResponse.ok) {
+              console.warn('Failed to delete some blobs, continuing with listing deletion');
+            }
+          } catch (error) {
+            console.error('Error deleting blobs:', error);
+            // Continue with listing deletion even if blob deletion fails
+          }
+        }
+    
+        const deletedListing = await db.delete(listings)
+          .where(eq(listings.id, id))
+          .returning();
+    
+        // Revalidate caches after deleting
+        await revalidateListingById(id);
+    
+        return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting listing:', error);
     return NextResponse.json(

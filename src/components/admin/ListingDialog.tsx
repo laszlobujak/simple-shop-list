@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { useForm } from '@tanstack/react-form';
 import { Listing, ListingCategory, ListingStatus, CATEGORY_LABELS, STATUS_LABELS } from '@/types/listing';
@@ -22,7 +22,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { X, Plus } from 'lucide-react';
+import { X, Upload, Loader2 } from 'lucide-react';
+import { isVercelBlobUrl } from '@/lib/blob-utils';
 
 interface ListingDialogProps {
   open: boolean;
@@ -42,8 +43,43 @@ const defaultValues: CreateListingInput = {
 };
 
 export function ListingDialog({ open, onOpenChange, listing, onSave, isSaving = false }: ListingDialogProps) {
-  const [photoUrl, setPhotoUrl] = useState('');
-  const [urlError, setUrlError] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+  const [photosToDelete, setPhotosToDelete] = useState<string[]>([]);
+
+  const handleSave = async (value: CreateListingInput) => {
+    // Delete all marked photos before saving
+    if (photosToDelete.length > 0) {
+      try {
+        await fetch('/api/upload/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ urls: photosToDelete }),
+        });
+        // Clear the deletion list after successful deletion
+        setPhotosToDelete([]);
+      } catch (error) {
+        console.error('Error deleting blobs:', error);
+        // Continue with save even if blob deletion fails
+      }
+    }
+
+    const now = new Date().toISOString();
+    const savedListing: Listing = listing
+      ? {
+          ...listing,
+          ...value,
+          updatedAt: now,
+        }
+      : {
+          id: crypto.randomUUID(),
+          ...value,
+          createdAt: now,
+          updatedAt: now,
+        };
+    onSave(savedListing);
+  };
 
   const form = useForm({
     defaultValues: listing ? {
@@ -58,25 +94,14 @@ export function ListingDialog({ open, onOpenChange, listing, onSave, isSaving = 
       onSubmit: createListingSchema,
     },
     onSubmit: async ({ value }) => {
-      const now = new Date().toISOString();
-      const savedListing: Listing = listing
-        ? {
-            ...listing,
-            ...value,
-            updatedAt: now,
-          }
-        : {
-            id: crypto.randomUUID(),
-            ...value,
-            createdAt: now,
-            updatedAt: now,
-          };
-      onSave(savedListing);
+      await handleSave(value);
     },
   });
 
   useEffect(() => {
     if (open) {
+      // Reset photos to delete when dialog opens
+      setPhotosToDelete([]);
       if (listing) {
         form.reset({
           title: listing.title,
@@ -89,29 +114,100 @@ export function ListingDialog({ open, onOpenChange, listing, onSave, isSaving = 
       } else {
         form.reset(defaultValues);
       }
+    } else {
+      // Dialog is closing - clean up photos marked for deletion if user didn't save
+      if (photosToDelete.length > 0) {
+        setPhotosToDelete([]);
+      }
     }
   }, [listing, open]);
 
-  const addPhoto = () => {
-    const trimmedUrl = photoUrl.trim();
-    if (!trimmedUrl) return;
+  const MAX_PHOTOS = 5;
 
-    setUrlError('');
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploadError('');
+    
     const currentPhotos = form.getFieldValue('photos') || [];
-    const newPhotos = [...currentPhotos, trimmedUrl];
+    const currentCount = currentPhotos.length;
+    const filesToUpload = Array.from(files);
+    
+    // Check if adding these files would exceed the limit
+    if (currentCount + filesToUpload.length > MAX_PHOTOS) {
+      const remainingSlots = MAX_PHOTOS - currentCount;
+      if (remainingSlots <= 0) {
+        setUploadError(`Maximum ${MAX_PHOTOS} photos allowed. Please remove some photos first.`);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+        return;
+      }
+      // Limit files to the remaining slots and show info message
+      const originalFileCount = filesToUpload.length;
+      const filesToSkip = originalFileCount - remainingSlots;
+      if (filesToSkip > 0) {
+        setUploadError(`Only ${remainingSlots} photo${remainingSlots > 1 ? 's' : ''} will be uploaded (${filesToSkip} file${filesToSkip > 1 ? 's' : ''} skipped). Maximum ${MAX_PHOTOS} photos allowed.`);
+      }
+      // Limit files to the remaining slots
+      filesToUpload.splice(remainingSlots);
+    }
+
+    setUploading(true);
 
     try {
+      const formData = new FormData();
+      filesToUpload.forEach((file) => {
+        formData.append('files', file);
+      });
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to upload images');
+      }
+
+      const { urls } = await response.json();
+      const newPhotos = [...currentPhotos, ...urls];
+
+      // Validate the new photos array
       createListingSchema.shape.photos.parse(newPhotos);
       form.setFieldValue('photos', newPhotos);
-      setPhotoUrl('');
+
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      
+      // Clear any previous error if upload succeeded
+      setUploadError('');
     } catch (error: any) {
-      const zodError = error.issues?.[0];
-      setUrlError(zodError?.message || 'Invalid image URL');
+      console.error('Upload error:', error);
+      setUploadError(error.message || 'Failed to upload images');
+    } finally {
+      setUploading(false);
     }
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
   };
 
   const removePhoto = (index: number) => {
     const currentPhotos = form.getFieldValue('photos') || [];
+    const photoToRemove = currentPhotos[index];
+
+    // Track blob for deletion on save if it's a Vercel Blob URL
+    if (photoToRemove && isVercelBlobUrl(photoToRemove)) {
+      setPhotosToDelete((prev) => [...prev, photoToRemove]);
+    }
+
+    // Remove from form state immediately
     form.setFieldValue('photos', currentPhotos.filter((_: string, i: number) => i !== index));
   };
 
@@ -261,28 +357,49 @@ export function ListingDialog({ open, onOpenChange, listing, onSave, isSaving = 
 
           {/* Photos */}
           <div className="space-y-2">
-            <Label className="font-sans">Photos</Label>
-            <div className="flex gap-2">
-              <div className="flex-1 space-y-1">
-                <Input
-                  value={photoUrl}
-                  onChange={(e) => {
-                    setPhotoUrl(e.target.value);
-                    setUrlError('');
-                  }}
-                  placeholder="Enter image URL (https://images.unsplash.com/...)"
-                  className={urlError ? 'border-destructive' : ''}
-                  disabled={isSaving}
-                />
-                {urlError && (
-                  <p className="text-xs text-destructive font-sans">
-                    {urlError}
-                  </p>
+            <div className="flex items-center justify-between">
+              <Label className="font-sans">Photos</Label>
+              <span className="text-xs text-muted-foreground font-sans">
+                {form.getFieldValue('photos')?.length || 0} / {MAX_PHOTOS}
+              </span>
+            </div>
+            <div className="space-y-2">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+                multiple
+                onChange={handleFileSelect}
+                className="hidden"
+                disabled={isSaving || uploading || (form.getFieldValue('photos')?.length || 0) >= MAX_PHOTOS}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleUploadClick}
+                disabled={isSaving || uploading || (form.getFieldValue('photos')?.length || 0) >= MAX_PHOTOS}
+                className="w-full"
+              >
+                {uploading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Uploading...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="h-4 w-4 mr-2" />
+                    Upload Images
+                  </>
                 )}
-              </div>
-              <Button type="button" variant="outline" onClick={addPhoto} disabled={isSaving}>
-                <Plus className="h-4 w-4" />
               </Button>
+              {uploadError && (
+                <p className="text-xs text-destructive font-sans">
+                  {uploadError}
+                </p>
+              )}
+              <p className="text-xs text-muted-foreground font-sans">
+                Supported formats: JPEG, PNG, WebP, GIF. Max 10MB per file. Maximum {MAX_PHOTOS} photos per listing.
+              </p>
             </div>
             <form.Field name="photos">
               {(field) => (

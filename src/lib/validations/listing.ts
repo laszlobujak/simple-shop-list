@@ -14,7 +14,7 @@ export const listingCategorySchema = z.enum([
   'other',
 ]);
 
-// Image URL validation with whitelist
+// Image URL validation with whitelist (includes Vercel Blob)
 const imageUrlSchema = z.string().url().refine(
   (url) => {
     try {
@@ -26,6 +26,8 @@ const imageUrlSchema = z.string().url().refine(
         'i.imgur.com',
         'cloudinary.com',
         'res.cloudinary.com',
+        // Vercel Blob domains
+        'public.blob.vercel-storage.com',
       ];
 
       return (
@@ -39,7 +41,7 @@ const imageUrlSchema = z.string().url().refine(
     }
   },
   {
-    message: 'Image URL must be HTTPS and from an allowed domain (Unsplash, Imgur, or Cloudinary)',
+    message: 'Image URL must be HTTPS and from an allowed domain (Unsplash, Imgur, Cloudinary, or Vercel Blob)',
   }
 );
 
@@ -51,7 +53,7 @@ export const createListingSchema = z.object({
     .positive('Price must be greater than 0')
     .max(10000000, 'Price is too high'),
   description: z.string().max(5000, 'Description must be less than 5000 characters'),
-  photos: z.array(imageUrlSchema).max(20, 'Maximum 20 photos allowed'),
+  photos: z.array(imageUrlSchema).max(5, 'Maximum 5 photos allowed'),
   status: listingStatusSchema,
 });
 
@@ -61,7 +63,7 @@ export const updateListingSchema = z.object({
   category: listingCategorySchema.optional(),
   price: z.number().positive('Price must be greater than 0').max(10000000, 'Price is too high').optional(),
   description: z.string().max(5000, 'Description must be less than 5000 characters').optional(),
-  photos: z.array(imageUrlSchema).max(20, 'Maximum 20 photos allowed').optional(),
+  photos: z.array(imageUrlSchema).max(5, 'Maximum 5 photos allowed').optional(),
   status: listingStatusSchema.optional(),
 });
 

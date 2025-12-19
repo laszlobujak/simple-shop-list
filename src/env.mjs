@@ -33,6 +33,8 @@ export const env = createEnv({
     // Better Auth
     BETTER_AUTH_SECRET: z.string().min(32),
     BETTER_AUTH_URL: z.url().optional(),
+    // Vercel Blob
+    BLOB_READ_WRITE_TOKEN: z.string().optional(),
   },
 
   /**
@@ -75,6 +77,8 @@ export const env = createEnv({
     // Better Auth
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
+    // Vercel Blob
+    BLOB_READ_WRITE_TOKEN: process.env.BLOB_READ_WRITE_TOKEN,
     // Client-side
     NEXT_PUBLIC_STACK_PROJECT_ID: process.env.NEXT_PUBLIC_STACK_PROJECT_ID,
     NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY: process.env.NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY,

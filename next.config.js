@@ -27,6 +27,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**.cloudinary.com',
       },
+      {
+        protocol: 'https',
+        hostname: '**.public.blob.vercel-storage.com',
+      },
     ],
   },
   async headers() {

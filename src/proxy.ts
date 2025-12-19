@@ -9,9 +9,9 @@ export default function proxy(request: NextRequest) {
     default-src 'self';
     script-src 'self' 'unsafe-eval' 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
-    img-src 'self' blob: data: https://images.unsplash.com https://unsplash.com https://imgur.com https://i.imgur.com https://*.cloudinary.com;
+    img-src 'self' blob: data: https://images.unsplash.com https://unsplash.com https://imgur.com https://i.imgur.com https://*.cloudinary.com https://*.public.blob.vercel-storage.com;
     font-src 'self' data:;
-    connect-src 'self';
+    connect-src 'self' https://*.public.blob.vercel-storage.com;
     frame-ancestors 'none';
     base-uri 'self';
     form-action 'self';
