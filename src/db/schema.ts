@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, real, pgEnum, boolean } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, real, pgEnum, boolean, index } from 'drizzle-orm/pg-core';
 
 export const listingStatusEnum = pgEnum('listing_status', [
   'draft',
@@ -78,4 +78,10 @@ export const listings = pgTable('listings', {
   status: listingStatusEnum('status').notNull().default('draft'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
+}, (table) => {
+  return {
+    statusIdx: index('listings_status_idx').on(table.status),
+    statusCreatedAtIdx: index('listings_status_created_at_idx').on(table.status, table.createdAt),
+    updatedAtIdx: index('listings_updated_at_idx').on(table.updatedAt),
+  };
 });

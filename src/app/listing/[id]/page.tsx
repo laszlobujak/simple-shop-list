@@ -2,20 +2,38 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { getListingById } from '@/lib/listings-server';
+import { getListingByIdCached, getPublicListingsCached } from '@/lib/listings-cached';
 import { CATEGORY_LABELS } from '@/types/listing';
 import { ListingPhotoGallery } from '@/components/listings/ListingPhotoGallery';
 import { ListingDetails } from '@/components/listings/ListingDetails';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import { cache } from 'react';
 
 interface ListingPageProps {
   params: Promise<{ id: string }>;
 }
 
+// Generate static params for all active/reserved listings at build time
+export async function generateStaticParams() {
+  const listings = await getPublicListingsCached();
+
+  // Pre-render top 50 most recent listings
+  return listings
+    .slice(0, 50)
+    .map((listing) => ({
+      id: listing.id,
+    }));
+}
+
+// Use React cache() to deduplicate getListingByIdCached calls within a single request
+const getCachedListing = cache(async (id: string) => {
+  return await getListingByIdCached(id);
+});
+
 export async function generateMetadata({ params }: ListingPageProps): Promise<Metadata> {
   const { id } = await params;
-  const listing = await getListingById(id);
+  const listing = await getCachedListing(id);
 
   if (!listing || (listing.status !== 'active' && listing.status !== 'reserved')) {
     return {
@@ -61,7 +79,7 @@ export async function generateMetadata({ params }: ListingPageProps): Promise<Me
 
 export default async function ListingDetailPage({ params }: ListingPageProps) {
   const { id } = await params;
-  const listing = await getListingById(id);
+  const listing = await getCachedListing(id);
 
   if (!listing || (listing.status !== 'active' && listing.status !== 'reserved')) {
     notFound();

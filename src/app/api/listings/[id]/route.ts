@@ -4,6 +4,7 @@ import { db } from '@/lib/db';
 import { listings } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { validateUpdateListing } from '@/lib/validations/listing';
+import { revalidateListingById } from '@/lib/revalidate';
 
 // GET single listing by ID
 export async function GET(
@@ -21,7 +22,11 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(listing[0]);
+    return NextResponse.json(listing[0], {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+      },
+    });
   } catch (error) {
     console.error('Error fetching listing:', error);
     return NextResponse.json(
@@ -57,6 +62,9 @@ export async function PUT(
         { status: 404 }
       );
     }
+
+    // Revalidate caches after updating
+    await revalidateListingById(id);
 
     return NextResponse.json(updatedListing[0]);
   } catch (error) {
@@ -101,6 +109,9 @@ export async function DELETE(
         { status: 404 }
       );
     }
+
+    // Revalidate caches after deleting
+    await revalidateListingById(id);
 
     return NextResponse.json({ success: true });
   } catch (error) {

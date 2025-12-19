@@ -41,7 +41,7 @@ export async function deleteListing(id: string): Promise<void> {
 
 export async function fetchListings(): Promise<Listing[]> {
   const response = await fetch('/api/listings', {
-    cache: 'no-store',
+    next: { revalidate: 60 }, // Use Next.js caching with 60s revalidation
   });
 
   if (!response.ok) {

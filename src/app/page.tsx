@@ -1,11 +1,11 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { getPublicListings } from '@/lib/listings-server';
+import { getPublicListingsCached } from '@/lib/listings-cached';
 import { ListingSearch } from '@/components/listings/ListingSearch';
 import { Button } from '@/components/ui/button';
 
 export default async function HomePage() {
-  const listings = await getPublicListings();
+  const listings = await getPublicListingsCached();
 
   return (
     <div className="min-h-screen flex flex-col">
