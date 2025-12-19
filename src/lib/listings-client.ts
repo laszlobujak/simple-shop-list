@@ -40,8 +40,10 @@ export async function deleteListing(id: string): Promise<void> {
 }
 
 export async function fetchListings(): Promise<Listing[]> {
+  // Client-side fetch - rely on React Query for caching and revalidation
+  // The API route handles server-side caching
   const response = await fetch('/api/listings', {
-    next: { revalidate: 60 }, // Use Next.js caching with 60s revalidation
+    cache: 'no-store', // Always fetch fresh data, React Query will handle caching
   });
 
   if (!response.ok) {

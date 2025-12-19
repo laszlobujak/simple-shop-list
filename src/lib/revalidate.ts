@@ -17,7 +17,8 @@ export async function revalidateListingById(id: string) {
   // Invalidate cache tag for this specific listing
   revalidateTag(`listing-${id}`, 'max');
 
-  // Also invalidate public listings since this listing might appear there
+  // Also invalidate all listings and public listings since this listing appears in both
+  revalidateTag('all-listings', 'max');
   revalidateTag('public-listings', 'max');
 
   // Revalidate paths for page-level cache
