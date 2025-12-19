@@ -14,9 +14,6 @@ interface ListingPageProps {
   params: Promise<{ id: string }>;
 }
 
-// Enable ISR - pages regenerate every 60 seconds
-export const revalidate = 60;
-
 // Generate static params for all active/reserved listings at build time
 export async function generateStaticParams() {
   const listings = await getPublicListingsCached();
