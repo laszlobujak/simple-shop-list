@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  fetchListings,
+  fetchAdminListings,
   createListing,
   updateListing,
   deleteListing
@@ -17,7 +17,7 @@ export const adminListingsKeys = {
 export function useAdminListings() {
   return useQuery({
     queryKey: adminListingsKeys.lists(),
-    queryFn: fetchListings,
+    queryFn: fetchAdminListings,
     staleTime: 0, // Always fetch fresh data
     gcTime: 0, // Don't cache in memory
     refetchOnWindowFocus: true, // Refetch when admin returns to tab

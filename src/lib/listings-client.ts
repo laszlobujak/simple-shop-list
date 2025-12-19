@@ -52,3 +52,19 @@ export async function fetchListings(): Promise<Listing[]> {
 
   return response.json();
 }
+
+// Admin-specific fetch with no-cache header to bypass Vercel CDN
+export async function fetchAdminListings(): Promise<Listing[]> {
+  const response = await fetch('/api/listings', {
+    cache: 'no-store',
+    headers: {
+      'X-Admin-Request': 'true',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch listings');
+  }
+
+  return response.json();
+}

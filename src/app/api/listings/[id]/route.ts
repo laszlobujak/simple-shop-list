@@ -22,9 +22,17 @@ export async function GET(
       );
     }
 
+    // Check if request is from admin dashboard
+    // Admin requests should bypass Vercel CDN cache
+    const isAdminRequest = request.headers.get('x-admin-request') === 'true';
+
+    const cacheControl = isAdminRequest
+      ? 'private, no-cache, no-store, must-revalidate, max-age=0'
+      : 'public, s-maxage=60, stale-while-revalidate=120';
+
     return NextResponse.json(listing[0], {
       headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+        'Cache-Control': cacheControl,
       },
     });
   } catch (error) {
