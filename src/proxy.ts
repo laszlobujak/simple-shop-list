@@ -12,6 +12,7 @@ export default function proxy(request: NextRequest) {
     img-src 'self' blob: data: https://images.unsplash.com https://unsplash.com https://imgur.com https://i.imgur.com https://*.cloudinary.com https://*.public.blob.vercel-storage.com;
     font-src 'self' data:;
     connect-src 'self' https://*.public.blob.vercel-storage.com;
+    worker-src 'self' blob:;
     frame-ancestors 'none';
     base-uri 'self';
     form-action 'self';
