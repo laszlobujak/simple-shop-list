@@ -9,9 +9,9 @@ interface ListingCardProps {
 
 export function ListingCard({ listing }: ListingCardProps) {
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('hu-HU', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'HUF',
       minimumFractionDigits: 0,
     }).format(price);
   };

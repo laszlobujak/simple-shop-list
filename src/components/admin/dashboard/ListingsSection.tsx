@@ -20,9 +20,9 @@ import { Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 function formatPrice(price: number) {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('hu-HU', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'HUF',
     minimumFractionDigits: 0,
   }).format(price);
 }

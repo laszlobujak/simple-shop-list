@@ -41,9 +41,9 @@ export async function generateMetadata({ params }: ListingPageProps): Promise<Me
   }
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('hu-HU', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'HUF',
       minimumFractionDigits: 0,
     }).format(price);
   };
@@ -84,9 +84,9 @@ export default async function ListingDetailPage({ params }: ListingPageProps) {
   }
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('hu-HU', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'HUF',
       minimumFractionDigits: 0,
     }).format(price);
   };
