@@ -11,7 +11,7 @@ const DEFAULT_OPTIONS: CompressionOptions = {
   maxWidthOrHeight: 1920,
   quality: 0.8,
   fileType: 'image/jpeg',
-  useWebWorker: true,
+  useWebWorker: false, // Disabled to avoid CSP issues with external scripts
 };
 
 /**
