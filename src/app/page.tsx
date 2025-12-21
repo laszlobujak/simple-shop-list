@@ -1,50 +1,556 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { getPublicListingsCached } from '@/lib/listings-cached';
-import { ListingSearch } from '@/components/listings/ListingSearch';
+import { ListingShowcase } from '@/components/listings/ListingShowcase';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import {
+  Shield,
+  Clock,
+  Sparkles,
+  Home,
+  CheckCircle2,
+  Crown,
+  ShoppingBag,
+  Scale,
+  Coins,
+  MessageCircle,
+  Phone,
+  MapPin,
+} from 'lucide-react';
 
 export default async function HomePage() {
   const listings = await getPublicListingsCached();
 
+  const trustPillars = [
+    {
+      title: '2001 óta a piacon',
+      description: 'Több mint két évtizedes tapasztalat az értékbecslés és a záloghitel területén.',
+    },
+    {
+      title: 'Szakértői csapat',
+      description: '3 szakember, több szakterület – ékszer, óra, műtárgy és egyéb értéktárgyak.',
+    },
+    {
+      title: 'Diszkréció és biztonság',
+      description: 'Bizalmas ügyintézés, biztonságos környezet, teljes körű titoktartás.',
+    },
+    {
+      title: 'Segítünk dönteni, nem siettetünk',
+      description: 'Nyugodt légkör, időt adunk a megfontolásra, nincsenek rejtett költségek.',
+    },
+  ];
+
+  const steps = [
+    {
+      number: '1',
+      title: 'Fotó / űrlap elküldése',
+      description: 'Küldjön fotót és alapadatokat tárgyáról kényelmesen, otthonról.',
+    },
+    {
+      number: '2',
+      title: 'AI előzetes értékbecslés',
+      description: 'Gyors, tájékoztató jellegű értékbecslés perceken belül.',
+    },
+    {
+      number: '3',
+      title: 'Szakértői egyeztetés',
+      description: 'Telefonos vagy személyes konzultáció szakértőinkkel.',
+    },
+    {
+      number: '4',
+      title: 'Értékmegállapítás',
+      description: 'Pontos értékbecslés üzletünkben vagy Önnél otthon.',
+    },
+    {
+      number: '5',
+      title: 'Döntés és ügyintézés',
+      description: 'Zálog, felvásárlás, beszámítás vagy piactéri értékesítés.',
+    },
+  ];
+
+  const services = [
+    {
+      icon: Scale,
+      title: 'Értékbecslés',
+      description: 'Szakértői becslés ékszerekre, órákra, műtárgyakra és értéktárgyakra.',
+    },
+    {
+      icon: Shield,
+      title: 'Zálog',
+      description: 'Gyors záloghitel, rugalmas futamidő, kedvező feltételek.',
+    },
+    {
+      icon: ShoppingBag,
+      title: 'Beszámítás',
+      description: 'Régi ékszerét új vásárlásba beszámítjuk kedvező áron.',
+    },
+    {
+      icon: Coins,
+      title: 'Felvásárlás',
+      description: 'Azonnali készpénzes felvásárlás valós piaci áron.',
+    },
+    {
+      icon: MessageCircle,
+      title: 'Tanácsadás',
+      description: 'Ingyenes konzultáció értéktárgyai kezeléséről és értékéről.',
+    },
+  ];
+
+  const faqs = [
+    {
+      question: 'Mennyire pontos az AI értékbecslés?',
+      answer:
+        'Az AI alapú előzetes becslés tájékoztató jellegű, segít gyorsan felmérni tárgya körülbelüli értékét. A végső, pontos értéket mindig szakértőink állapítják meg személyesen, figyelembe véve az állapotot, ritkaságot és piaci keresletet.',
+    },
+    {
+      question: 'Mennyi idő az előzetes becslés?',
+      answer:
+        'Az AI alapú előzetes értékbecslést általában néhány percen belül elküldjük. A szakértői végleges becslés személyes egyeztetés után történik, amely 15-30 percet vesz igénybe.',
+    },
+    {
+      question: 'Mennyibe kerül az értékbecslés?',
+      answer:
+        'Az előzetes AI alapú becslés és az első konzultáció ingyenes. A részletes szakértői értékbecslés díja a tárgy típusától függ, de erről előzetesen mindig tájékoztatjuk Önt.',
+    },
+    {
+      question: 'Hogyan zajlik a házhoz menő értékbecslés?',
+      answer:
+        'VIP szolgáltatásként szakértőnk előre egyeztetett időpontban az Ön otthonában végzi az értékbecslést. Ez ideális nagyobb, törékeny vagy nehezen szállítható tárgyak esetén. Diszkrét, biztonságos, időpont-alapú szolgáltatás.',
+    },
+    {
+      question: 'Mit érdemes előkészíteni az értékbecsléshez?',
+      answer:
+        'Ha van, készítse elő a tanúsítványokat, eredeti dobozokat, számlát vagy egyéb dokumentációt. Több tárgynál segít, ha fényképeket készít előre. Minden információ hasznos a pontos értékbecsléshez.',
+    },
+    {
+      question: 'Mi a különbség a zálog és a felvásárlás között?',
+      answer:
+        'Zálog esetén kölcsönt kap tárgya fedezetével, amit meghatározott időn belül visszaválthat. Felvásárlás esetén véglegesen értékesíti tárgyát készpénzért. Mindkét esetben tisztességes, piaci árat kínálunk.',
+    },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-card border-b border-border">
-          <div className="container mx-auto px-4 py-16 lg:py-24 text-center">
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium text-foreground mb-4">
-              Curated Treasures
-            </h1>
-            <p className="font-sans text-lg text-muted-foreground max-w-2xl mx-auto">
-              Discover exceptional pieces from our carefully appraised collection. 
-              Each item tells a story of craftsmanship and timeless elegance.
-            </p>
+        <section className="relative bg-gradient-to-b from-background to-muted/30 py-20 md:py-28 lg:py-32">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Left Column - Content */}
+              <div className="space-y-8">
+                <div className="space-y-4">
+                  <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-balance leading-tight">
+                    Korrekt értékbecslés, nyugodt döntések.
+                  </h1>
+                  <p className="text-lg md:text-xl text-muted-foreground text-pretty leading-relaxed">
+                    Szakértői értékbecslés, záloghitel, felvásárlás és tanácsadás. Nem siettetjük ügyfeleinket – segítünk
+                    nyugodt körülmények között meghozni a legjobb döntést értéktárgyai sorsáról.
+                  </p>
+                </div>
+
+                {/* Trust Bullets */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                    <span className="text-sm md:text-base">2001 óta működünk</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                    <span className="text-sm md:text-base">3 szakember – több szakterület</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                    <span className="text-sm md:text-base">Nyugati pályaudvarnál, könnyen elérhető</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                    <span className="text-sm md:text-base">Diszkrét, korrekt ügyintézés</span>
+                  </div>
+                </div>
+
+                {/* CTAs */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button size="lg" className="text-base md:text-lg px-8 py-6 bg-primary hover:bg-primary/90">
+                    Értékbecslést kérek
+                  </Button>
+                  <Button size="lg" variant="outline" className="text-base md:text-lg px-8 py-6 border-2 bg-transparent">
+                    <Crown className="w-5 h-5 mr-2" />
+                    Házhoz megyünk (VIP)
+                  </Button>
+                </div>
+              </div>
+
+              {/* Right Column - Image */}
+              <div className="relative h-[400px] lg:h-[500px] rounded-lg overflow-hidden shadow-xl bg-gradient-to-br from-primary/10 via-accent/20 to-primary/10 flex items-center justify-center">
+                <div className="text-center">
+                  <Crown className="w-24 h-24 text-accent/60 mx-auto mb-4" />
+                  <p className="text-sm text-muted-foreground font-semibold">Értékes tárgyak</p>
+                  <p className="text-xs text-muted-foreground/60 mt-1">Ékszerek · Órák · Műtárgyak</p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Listings Section */}
-        <section className="container mx-auto px-4 py-12 lg:py-16">
-          <ListingSearch initialListings={listings} />
+        {/* Trust Pillars */}
+        <section className="py-16 md:py-24 bg-card">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+            <div className="text-center mb-12 md:mb-16">
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Miért bíznak bennünk?</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Több mint 20 éves tapasztalat, szakértelem és megbízhatóság.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+              {trustPillars.map((pillar, index) => (
+                <Card key={index} className="border-2 hover:shadow-lg transition-shadow">
+                  <CardContent className="p-6 md:p-8 space-y-3">
+                    <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center mb-4">
+                      <Shield className="w-6 h-6 text-accent" />
+                    </div>
+                    <h3 className="font-serif text-xl font-semibold text-balance">{pillar.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{pillar.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         </section>
 
-        {/* Contact Section */}
-        <section className="bg-card border-t border-border">
-          <div className="container mx-auto px-4 py-16 text-center">
-            <h2 className="font-serif text-3xl font-medium text-foreground mb-4">
-              Interested in an Item?
-            </h2>
-            <p className="font-sans text-muted-foreground mb-6 max-w-xl mx-auto">
-              Our specialists are available to answer your questions and arrange viewings. 
-              Contact us to learn more about any piece in our collection.
-            </p>
-            <a href="tel:+1234567890">
-              <Button size="lg" className="font-sans">
-                Call (123) 456-7890
-              </Button>
-            </a>
+        {/* How It Works */}
+        <section className="py-16 md:py-24 bg-muted/30">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+            <div className="text-center mb-12 md:mb-16">
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Hogyan működik?</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Egyszerű, átlátható folyamat – lépésről lépésre.
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto space-y-8">
+              {steps.map((step, index) => (
+                <div key={index} className="flex gap-6 items-start">
+                  <div className="flex-shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-full bg-accent text-accent-foreground flex items-center justify-center font-serif text-xl md:text-2xl font-bold">
+                    {step.number}
+                  </div>
+                  <div className="flex-1 pt-2">
+                    <h3 className="font-serif text-xl md:text-2xl font-semibold mb-2">{step.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{step.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-12 text-center">
+              <p className="text-sm text-muted-foreground bg-card inline-block px-6 py-3 rounded-full border">
+                <strong>Fontos:</strong> A végső értéket mindig szakértő állapítja meg.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* AI Appraisal Explainer */}
+        <section className="py-16 md:py-24 bg-card">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Left - Image */}
+              <div className="order-2 lg:order-1">
+                <div className="relative h-[350px] rounded-lg overflow-hidden shadow-lg bg-gradient-to-br from-accent/20 via-primary/5 to-accent/10 flex items-center justify-center">
+                  <div className="text-center">
+                    <Sparkles className="w-20 h-20 text-accent mx-auto mb-4" />
+                    <p className="text-sm text-foreground font-semibold">AI Technológia</p>
+                    <p className="text-xs text-muted-foreground mt-1">Gyors és pontos értékbecslés</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right - Content */}
+              <div className="order-1 lg:order-2 space-y-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/20 rounded-full">
+                  <Sparkles className="w-5 h-5 text-accent" />
+                  <span className="text-sm font-semibold text-accent-foreground">AI Technológia</span>
+                </div>
+
+                <h2 className="font-serif text-3xl md:text-4xl font-bold">
+                  AI értékbecslés – gyors előzetes tájékoztatás
+                </h2>
+
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  Mesterséges intelligencia alapú rendszerünk segít gyors, előzetes képet kapni értéktárgya körülbelüli
+                  értékéről.
+                </p>
+
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                    <span>
+                      <strong>Gyors:</strong> Perceken belül válaszolunk
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                    <span>
+                      <strong>Kényelmes:</strong> Otthonról, fotó alapján
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                    <span>
+                      <strong>Tájékoztató:</strong> Segít felmérni a lehetőségeket
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                    <span>
+                      <strong>Szakértői kontroll:</strong> Mindig ember ellenőrzi
+                    </span>
+                  </li>
+                </ul>
+
+                <div className="pt-4">
+                  <p className="text-sm text-muted-foreground italic border-l-4 border-accent pl-4">
+                    Az AI becslés kiindulópont. A végleges értéket tapasztalt szakértőink határozzák meg személyes
+                    vizsgálat után.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* VIP Home Visit */}
+        <section className="py-16 md:py-24 bg-accent/10 border-y-2 border-accent/30">
+          <div className="container mx-auto px-4 md:px-6 max-w-5xl">
+            <div className="text-center space-y-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent rounded-full">
+                <Crown className="w-5 h-5 text-accent-foreground" />
+                <span className="text-sm font-bold text-accent-foreground">VIP Szolgáltatás</span>
+              </div>
+
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold">Házhoz megy az értékbecslő</h2>
+
+              <p className="text-lg text-foreground/90 max-w-3xl mx-auto leading-relaxed">
+                Nagyobb, törékeny vagy nehezen szállítható értéktárgyak esetén szakértőnk Önhöz látogat. Előre egyeztetett
+                időpontban, diszkréten, biztonságosan végezzük az értékbecslést az Ön otthonában.
+              </p>
+
+              <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto pt-6">
+                <div className="flex flex-col items-center gap-3 text-center">
+                  <Home className="w-10 h-10 text-accent" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Otthonában</h4>
+                    <p className="text-sm text-muted-foreground">Kényelmes és biztonságos</p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-3 text-center">
+                  <Clock className="w-10 h-10 text-accent" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Időpont alapú</h4>
+                    <p className="text-sm text-muted-foreground">Önnek megfelelő időben</p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-3 text-center">
+                  <Shield className="w-10 h-10 text-accent" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Diszkréció</h4>
+                    <p className="text-sm text-muted-foreground">Teljes körű titoktartás</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-6">
+                <Button size="lg" className="text-base md:text-lg px-8 py-6 bg-primary hover:bg-primary/90">
+                  <Phone className="w-5 h-5 mr-2" />
+                  Időpontot kérek házhoz
+                </Button>
+              </div>
+
+              <p className="text-sm text-muted-foreground italic pt-4">
+                Biztonság: Szakértőink azonosító igazolvánnyal érkeznek. Minden értékbecslésről írásos dokumentumot adunk.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Marketplace Section with Listings */}
+        <section className="py-16 md:py-24 bg-card">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+            <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+              {/* Left - Content */}
+              <div className="space-y-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-muted rounded-full">
+                  <ShoppingBag className="w-5 h-5 text-muted-foreground" />
+                  <span className="text-sm font-semibold">Értékesítési Lehetőség</span>
+                </div>
+
+                <h2 className="font-serif text-3xl md:text-4xl font-bold">Piactér: segítünk az értékesítésben</h2>
+
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  Nem csak felvásárlást kínálunk – közvetítőként is segítünk értéktárgyai értékesítésében. Piacterünkön
+                  érdeklődő vásárlókkal hozzuk össze Önt, biztonságos és szervezett keretek között.
+                </p>
+
+                <div className="space-y-4 pt-4">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold mb-1">Közvetítői modell</h4>
+                      <p className="text-sm text-muted-foreground">Összekötjük eladókat és vásárlókat</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold mb-1">Mi kezeljük az érdeklődéseket</h4>
+                      <p className="text-sm text-muted-foreground">Nem kell közvetlenül foglalkoznia a vevőkkel</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold mb-1">Biztonságos folyamat</h4>
+                      <p className="text-sm text-muted-foreground">Ellenőrzött, szervezett értékesítés</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold mb-1">Jobb ár lehetséges</h4>
+                      <p className="text-sm text-muted-foreground">A piaci kereslet szerint</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4">
+                  <Button size="lg" variant="outline" className="text-base border-2 bg-transparent">
+                    Szeretném eladni – érdeklődöm
+                  </Button>
+                </div>
+              </div>
+
+              {/* Right - Image */}
+              <div className="relative h-[400px] rounded-lg overflow-hidden shadow-lg bg-gradient-to-br from-primary/10 via-accent/15 to-primary/5 flex items-center justify-center">
+                <div className="text-center">
+                  <ShoppingBag className="w-20 h-20 text-accent mx-auto mb-4" />
+                  <p className="text-sm text-foreground font-semibold">Online Piactér</p>
+                  <p className="text-xs text-muted-foreground mt-1">Biztonságos értékesítés</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Listings Showcase */}
+            <div className="border-t border-border pt-16">
+              <div className="text-center mb-12">
+                <h3 className="font-serif text-2xl md:text-3xl font-bold mb-4">Aktuális kínálatunk</h3>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                  Legújabb értéktárgyaink a piacterünkön. Minden darab szakértői becslés alapján kerül értékesítésre.
+                </p>
+              </div>
+              <ListingShowcase listings={listings} maxItems={4} />
+            </div>
+          </div>
+        </section>
+
+        {/* Services Grid */}
+        <section className="py-16 md:py-24 bg-muted/30">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+            <div className="text-center mb-12 md:mb-16">
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Szolgáltatásaink</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Teljes körű megoldások értéktárgyaihoz.</p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {services.map((service, index) => {
+                const Icon = service.icon;
+                return (
+                  <Card key={index} className="hover:shadow-lg transition-shadow">
+                    <CardContent className="p-6 md:p-8 space-y-4">
+                      <div className="w-14 h-14 rounded-lg bg-accent/20 flex items-center justify-center">
+                        <Icon className="w-7 h-7 text-accent" />
+                      </div>
+                      <h3 className="font-serif text-xl md:text-2xl font-semibold">{service.title}</h3>
+                      <p className="text-muted-foreground leading-relaxed">{service.description}</p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="py-16 md:py-24 bg-card">
+          <div className="container mx-auto px-4 md:px-6 max-w-4xl">
+            <div className="text-center mb-12 md:mb-16">
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Gyakori kérdések</h2>
+              <p className="text-lg text-muted-foreground">Válaszok a leggyakrabban felmerülő kérdésekre.</p>
+            </div>
+
+            <Accordion type="single" collapsible className="space-y-4">
+              {faqs.map((faq, index) => (
+                <AccordionItem
+                  key={index}
+                  value={`item-${index}`}
+                  className="border-2 rounded-lg px-6 data-[state=open]:bg-muted/30"
+                >
+                  <AccordionTrigger className="text-left font-semibold text-base md:text-lg hover:no-underline py-5">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground leading-relaxed pb-5 pt-2">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </section>
+
+        {/* Final CTA + Contact */}
+        <section className="py-16 md:py-24 bg-primary text-primary-foreground">
+          <div className="container mx-auto px-4 md:px-6 max-w-5xl text-center">
+            <div className="space-y-8">
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-balance">
+                Készen áll a következő lépésre?
+              </h2>
+
+              <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto leading-relaxed">
+                Vegye fel velünk a kapcsolatot még ma. Szakértőink készséggel állnak rendelkezésére, hogy segítsünk
+                meghozni a legjobb döntést.
+              </p>
+
+              <div className="flex items-center justify-center gap-2 text-lg">
+                <MapPin className="w-5 h-5" />
+                <span>Nyugati pályaudvar környéke – könnyen megközelíthető</span>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                <Button size="lg" variant="secondary" className="text-base md:text-lg px-8 py-6">
+                  <Phone className="w-5 h-5 mr-2" />
+                  Hívás indítása
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="text-base md:text-lg px-8 py-6 border-2 border-primary-foreground/30 hover:bg-primary-foreground/10 text-primary-foreground bg-transparent"
+                >
+                  Űrlap kitöltése
+                </Button>
+              </div>
+
+              <div className="pt-8 opacity-75 text-sm">
+                <p>
+                  Telefonon: <strong>+36 1 234 5678</strong>
+                </p>
+                <p className="mt-1">
+                  Email: <strong>info@ertekbecsles.hu</strong>
+                </p>
+              </div>
+            </div>
           </div>
         </section>
       </main>
@@ -53,4 +559,3 @@ export default async function HomePage() {
     </div>
   );
 }
-

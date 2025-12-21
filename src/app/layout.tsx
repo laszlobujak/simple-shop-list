@@ -16,24 +16,24 @@ const dmSans = DM_Sans({
 
 export const metadata = {
   title: {
-    default: "Estate & Co. - Curated Treasures",
-    template: "%s | Estate & Co.",
+    default: "Záloghitel és Értékbecslés | 2001 óta",
+    template: "%s | Záloghitel és Értékbecslés",
   },
-  description: "Discover exceptional pieces from our carefully appraised collection. Each item tells a story of craftsmanship and timeless elegance.",
-  keywords: ["estate sale", "antiques", "vintage", "collectibles", "furniture", "home decor"],
-  authors: [{ name: "Estate & Co." }],
-  creator: "Estate & Co.",
+  description: "Korrekt értékbecslés, nyugodt döntések. Szakértői becslés, záloghitel, felvásárlás. VIP házhoz megy szolgáltatás.",
+  keywords: ["záloghitel", "értékbecslés", "ékszer", "óra", "műtárgy", "felvásárlás", "beszámítás", "piactér"],
+  authors: [{ name: "Záloghitel és Értékbecslés" }],
+  creator: "Záloghitel és Értékbecslés",
   openGraph: {
     type: "website",
-    locale: "en_US",
-    siteName: "Estate & Co.",
-    title: "Estate & Co. - Curated Treasures",
-    description: "Discover exceptional pieces from our carefully appraised collection. Each item tells a story of craftsmanship and timeless elegance.",
+    locale: "hu_HU",
+    siteName: "Záloghitel és Értékbecslés",
+    title: "Záloghitel és Értékbecslés | 2001 óta",
+    description: "Korrekt értékbecslés, nyugodt döntések. Szakértői becslés, záloghitel, felvásárlás. VIP házhoz megy szolgáltatás.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Estate & Co. - Curated Treasures",
-    description: "Discover exceptional pieces from our carefully appraised collection. Each item tells a story of craftsmanship and timeless elegance.",
+    title: "Záloghitel és Értékbecslés | 2001 óta",
+    description: "Korrekt értékbecslés, nyugodt döntések. Szakértői becslés, záloghitel, felvásárlás. VIP házhoz megy szolgáltatás.",
   },
   robots: {
     index: true,
@@ -48,8 +48,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
-      <body>
+    <html lang="hu" className={`${playfair.variable} ${dmSans.variable}`}>
+      <body className="font-sans antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>

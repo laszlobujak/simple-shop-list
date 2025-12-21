@@ -8,17 +8,17 @@ export function Header() {
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <span className="font-serif text-2xl font-semibold tracking-tight text-foreground">
-              Estate & Co.
+              Értékbecslés & Zálog
             </span>
           </Link>
-          
+
           <div className="flex items-center gap-6">
-            <a 
-              href="tel:+1234567890" 
+            <a
+              href="tel:+3612345678"
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
             >
               <Phone className="h-4 w-4" />
-              <span className="hidden sm:inline font-sans text-sm">(123) 456-7890</span>
+              <span className="hidden sm:inline font-sans text-sm">+36 1 234 5678</span>
             </a>
           </div>
         </div>

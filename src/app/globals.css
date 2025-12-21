@@ -6,77 +6,65 @@
 
 @layer base {
   :root {
-    --background: 40 20% 98%;
-    --foreground: 30 10% 15%;
-    --card: 40 30% 96%;
-    --card-foreground: 30 10% 15%;
-    --popover: 40 30% 96%;
-    --popover-foreground: 30 10% 15%;
-    --primary: 30 10% 20%;
-    --primary-foreground: 40 20% 98%;
-    --secondary: 35 25% 90%;
-    --secondary-foreground: 30 10% 20%;
-    --muted: 35 15% 92%;
-    --muted-foreground: 30 8% 45%;
-    --accent: 38 70% 50%;
-    --accent-foreground: 30 10% 15%;
+    /* Hungarian pawn shop - #CCA774 (gold) and #262F38 (dark blue-grey) */
+    --background: 40 25% 98%; /* Ivory/cream background */
+    --foreground: 207 20% 19%; /* Dark blue-grey #262F38 */
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 207 20% 19%; /* Dark blue-grey on cards */
+    --popover: 0 0% 100%;
+    --popover-foreground: 207 20% 19%;
+    --primary: 207 20% 19%; /* Dark blue-grey #262F38 */
+    --primary-foreground: 40 25% 98%; /* Ivory on dark */
+    --secondary: 35 45% 62%; /* Gold #CCA774 */
+    --secondary-foreground: 207 20% 19%; /* Dark on gold */
+    --muted: 40 15% 93%;
+    --muted-foreground: 207 15% 40%;
+    --accent: 35 45% 62%; /* Gold accent #CCA774 */
+    --accent-foreground: 207 20% 19%; /* Dark on gold */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 35 20% 88%;
-    --input: 35 20% 88%;
-    --ring: 38 70% 50%;
+    --border: 40 15% 88%;
+    --input: 40 15% 88%;
+    --ring: 35 45% 62%; /* Gold ring */
     --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-foreground: 207 20% 19%;
+    --sidebar-primary: 207 20% 19%;
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-accent-foreground: 207 20% 19%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-    
-    /* Custom tokens */
-    --gold: 38 70% 50%;
-    --gold-light: 40 65% 70%;
-    --cream: 40 30% 96%;
-    --charcoal: 30 10% 15%;
-    --warm-gray: 30 8% 45%;
+    --sidebar-ring: 35 45% 62%;
   }
 
   .dark {
-    --background: 30 10% 10%;
-    --foreground: 40 20% 95%;
-    --card: 30 10% 14%;
-    --card-foreground: 40 20% 95%;
-    --popover: 30 10% 14%;
-    --popover-foreground: 40 20% 95%;
-    --primary: 40 20% 95%;
-    --primary-foreground: 30 10% 10%;
-    --secondary: 30 10% 20%;
-    --secondary-foreground: 40 20% 95%;
-    --muted: 30 10% 20%;
-    --muted-foreground: 35 15% 60%;
-    --accent: 38 70% 50%;
-    --accent-foreground: 30 10% 10%;
+    --background: 207 20% 10%;
+    --foreground: 0 0% 98%;
+    --card: 207 20% 14%;
+    --card-foreground: 0 0% 98%;
+    --popover: 207 20% 14%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 207 20% 10%;
+    --secondary: 207 15% 20%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 207 15% 20%;
+    --muted-foreground: 0 10% 65%;
+    --accent: 35 45% 55%; /* Slightly brighter gold for dark mode */
+    --accent-foreground: 207 20% 10%;
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 30 10% 25%;
-    --input: 30 10% 25%;
-    --ring: 38 70% 50%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-    
-    --gold: 38 70% 55%;
-    --gold-light: 40 65% 40%;
-    --cream: 30 10% 14%;
-    --charcoal: 40 20% 95%;
-    --warm-gray: 35 15% 60%;
+    --border: 207 15% 25%;
+    --input: 207 15% 25%;
+    --ring: 35 45% 55%;
+    --sidebar-background: 207 20% 10%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 35 45% 55%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 207 15% 18%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 207 15% 18%;
+    --sidebar-ring: 35 45% 55%;
   }
 }
 
@@ -86,6 +74,9 @@
   }
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    /* Increase base font size and line-height for 50+ audience */
+    font-size: 17px;
+    line-height: 1.7;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
