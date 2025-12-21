@@ -88,3 +88,5 @@ Compresses multiple image files in parallel.
 - ✅ Blob URL cleanup on save
 - ✅ Error handling and user feedback
 - ✅ Responsive UI with loading states
+
+

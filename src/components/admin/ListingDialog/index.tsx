@@ -23,6 +23,7 @@ import {
 import { isVercelBlobUrl } from '@/lib/blob-utils';
 import { PhotoUploadSection } from './PhotoUploadSection';
 import { FormField, getFieldError } from './FormField';
+import { formatNumberWithSpaces, parseFormattedNumber } from '@/lib/number-format';
 
 interface ListingDialogProps {
   open: boolean;
@@ -163,23 +164,32 @@ export function ListingDialog({ open, onOpenChange, listing, onSave, isSaving = 
             </form.Field>
 
             <form.Field name="price">
-              {(field) => (
-                <FormField
-                  label="Price"
-                  htmlFor={field.name}
-                  error={getFieldError(field.state.meta.errors)}
-                >
-                  <Input
-                    id={field.name}
-                    type="number"
-                    value={field.state.value || ''}
-                    onChange={(e) => field.handleChange(e.target.value === '' ? 0 : Number(e.target.value))}
-                    onBlur={field.handleBlur}
-                    placeholder="Enter price"
-                    disabled={isSaving}
-                  />
-                </FormField>
-              )}
+              {(field) => {
+                const displayValue = field.state.value ? formatNumberWithSpaces(field.state.value) : '';
+                
+                return (
+                  <FormField
+                    label="Price"
+                    htmlFor={field.name}
+                    error={getFieldError(field.state.meta.errors)}
+                  >
+                    <Input
+                      id={field.name}
+                      type="text"
+                      inputMode="numeric"
+                      value={displayValue}
+                      onChange={(e) => {
+                        const rawValue = e.target.value;
+                        const numericValue = parseFormattedNumber(rawValue);
+                        field.handleChange(numericValue);
+                      }}
+                      onBlur={field.handleBlur}
+                      placeholder="Enter price"
+                      disabled={isSaving}
+                    />
+                  </FormField>
+                );
+              }}
             </form.Field>
           </div>
 
@@ -292,3 +302,5 @@ export function ListingDialog({ open, onOpenChange, listing, onSave, isSaving = 
     </Dialog>
   );
 }
+
+

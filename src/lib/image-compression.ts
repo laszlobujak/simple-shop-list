@@ -77,3 +77,5 @@ export async function compressImages(
 ): Promise<File[]> {
   return Promise.all(files.map((file) => compressImage(file, options)));
 }
+
+

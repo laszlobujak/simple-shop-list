@@ -137,3 +137,5 @@ import { PhotoUploadSection } from '@/components/admin/ListingDialog/PhotoUpload
 - All existing functionality preserved
 - TypeScript compilation successful
 - Ready for production use
+
+
