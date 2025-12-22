@@ -2,6 +2,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { getPublicListingsCached } from '@/lib/listings-cached';
 import { ListingShowcase } from '@/components/listings/ListingShowcase';
+import { HeroImage } from '@/components/ui/hero-image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -185,13 +186,14 @@ export default async function HomePage() {
               </div>
 
               {/* Right Column - Image */}
-              <div className="relative h-[400px] lg:h-[500px] rounded-lg overflow-hidden shadow-xl bg-gradient-to-br from-primary/10 via-accent/20 to-primary/10 flex items-center justify-center">
-                <div className="text-center">
-                  <Crown className="w-24 h-24 text-accent/60 mx-auto mb-4" />
-                  <p className="text-sm text-muted-foreground font-semibold">Értékes tárgyak</p>
-                  <p className="text-xs text-muted-foreground/60 mt-1">Ékszerek · Órák · Műtárgyak</p>
-                </div>
-              </div>
+              <HeroImage
+                src="/images/hero/hero-jewelry.jpg"
+                alt="Ékszerek és értéktárgyak"
+                icon={Crown}
+                title="Értékes tárgyak"
+                subtitle="Ékszerek · Órák · Műtárgyak"
+                className="relative h-[400px] lg:h-[500px] rounded-lg overflow-hidden shadow-xl"
+              />
             </div>
           </div>
         </section>
@@ -260,13 +262,14 @@ export default async function HomePage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left - Image */}
               <div className="order-2 lg:order-1">
-                <div className="relative h-[350px] rounded-lg overflow-hidden shadow-lg bg-gradient-to-br from-accent/20 via-primary/5 to-accent/10 flex items-center justify-center">
-                  <div className="text-center">
-                    <Sparkles className="w-20 h-20 text-accent mx-auto mb-4" />
-                    <p className="text-sm text-foreground font-semibold">AI Technológia</p>
-                    <p className="text-xs text-muted-foreground mt-1">Gyors és pontos értékbecslés</p>
-                  </div>
-                </div>
+                <HeroImage
+                  src="/images/sections/ai-appraisal.jpg"
+                  alt="AI technológia értékbecsléshez"
+                  icon={Sparkles}
+                  title="AI Technológia"
+                  subtitle="Gyors és pontos értékbecslés"
+                  className="relative h-[350px] rounded-lg overflow-hidden shadow-lg"
+                />
               </div>
 
               {/* Right - Content */}
@@ -434,13 +437,14 @@ export default async function HomePage() {
               </div>
 
               {/* Right - Image */}
-              <div className="relative h-[400px] rounded-lg overflow-hidden shadow-lg bg-gradient-to-br from-primary/10 via-accent/15 to-primary/5 flex items-center justify-center">
-                <div className="text-center">
-                  <ShoppingBag className="w-20 h-20 text-accent mx-auto mb-4" />
-                  <p className="text-sm text-foreground font-semibold">Online Piactér</p>
-                  <p className="text-xs text-muted-foreground mt-1">Biztonságos értékesítés</p>
-                </div>
-              </div>
+              <HeroImage
+                src="/images/sections/marketplace.jpg"
+                alt="Online piactér értéktárgyakhoz"
+                icon={ShoppingBag}
+                title="Online Piactér"
+                subtitle="Biztonságos értékesítés"
+                className="relative h-[400px] rounded-lg overflow-hidden shadow-lg"
+              />
             </div>
 
             {/* Listings Showcase */}
