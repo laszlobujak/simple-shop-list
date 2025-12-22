@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { getPublicListingsCached } from '@/lib/listings-cached';
@@ -31,8 +30,8 @@ export default async function HomePage() {
       description: 'Több mint két évtizedes tapasztalat az értékbecslés és a záloghitel területén.',
     },
     {
-      title: 'Szakértői képesítések',
-      description: 'Óra-ékszer becsüs, műtárgy becsüs, drágakő határozói és iparcikk képesítéssel rendelkező szakembereink.',
+      title: 'Szakértői csapat',
+      description: '3 szakember, több szakterület – ékszer, óra, műtárgy és egyéb értéktárgyak.',
     },
     {
       title: 'Diszkréció és biztonság',
@@ -76,36 +75,31 @@ export default async function HomePage() {
     {
       icon: Scale,
       title: 'Értékbecslés',
-      description: 'Szakértői becslés ékszerekre, órákra, műtárgyakra és értéktárgyakra. Óra-ékszer becsüs és műtárgy becsüs képesítéssel.',
+      description: 'Szakértői becslés ékszerekre, órákra, műtárgyakra és értéktárgyakra.',
     },
     {
       icon: Shield,
       title: 'Zálog',
-      description: 'Gyors záloghitel, rugalmas futamidő, kedvező feltételek. Drágakő határozói vizsgálat igény szerint.',
+      description: 'Gyors záloghitel, rugalmas futamidő, kedvező feltételek.',
     },
     {
       icon: ShoppingBag,
       title: 'Beszámítás',
-      description: 'Régi ékszerét új vásárlásba beszámítjuk kedvező áron. Iparcikk becsüs képesítéssel.',
+      description: 'Régi ékszerét új vásárlásba beszámítjuk kedvező áron.',
     },
     {
       icon: Coins,
       title: 'Felvásárlás',
-      description: 'Azonnali készpénzes felvásárlás valós piaci áron. Szakértői értékmegállapítás minden esetben.',
+      description: 'Azonnali készpénzes felvásárlás valós piaci áron.',
     },
     {
       icon: MessageCircle,
       title: 'Tanácsadás',
-      description: 'Ingyenes konzultáció értéktárgyai kezeléséről és értékéről. Többszintű szakértői háttér.',
+      description: 'Ingyenes konzultáció értéktárgyai kezeléséről és értékéről.',
     },
   ];
 
   const faqs = [
-    {
-      question: 'Milyen képesítésekkel rendelkeznek a szakértők?',
-      answer:
-        'Szakértői csapatunk óra-ékszer becsüs, műtárgy becsüs, drágakő határozói és iparcikk becsüs képesítéssel rendelkezik. Több mint 20 éves piaci tapasztalattal garantáljuk az értékbecslések szakszerűségét és megbízhatóságát.',
-    },
     {
       question: 'Mennyire pontos az AI értékbecslés?',
       answer:
@@ -144,7 +138,7 @@ export default async function HomePage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-b from-background to-muted/30 py-20 md:py-28 lg:py-24">
+        <section className="relative bg-gradient-to-b from-background to-muted/30 py-20 md:py-28 lg:py-32">
           <div className="container mx-auto px-4 md:px-6 max-w-7xl">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left Column - Content */}
@@ -240,71 +234,20 @@ export default async function HomePage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
-              {/* Step 1 - Contact */}
-              <div className="flex flex-col items-center text-center space-y-4">
-                <div className="relative w-full aspect-square rounded-lg overflow-hidden shadow-lg mb-2">
-                  <Image
-                    src="/images/sections/person-calling-phone-contact-consultation.jpg"
-                    alt="Ügyfél telefonál"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  <div className="absolute top-4 left-4 w-12 h-12 bg-accent rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-accent-foreground font-serif text-2xl font-bold">1</span>
+            <div className="max-w-4xl mx-auto space-y-8">
+              {steps.map((step, index) => (
+                <div key={index} className="flex gap-6 items-start">
+                  <div className="flex-shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-full bg-accent text-accent-foreground flex items-center justify-center font-serif text-xl md:text-2xl font-bold">
+                    {step.number}
+                  </div>
+                  <div className="flex-1 pt-2">
+                    <h3 className="font-serif text-xl md:text-2xl font-semibold mb-2">{step.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{step.description}</p>
                   </div>
                 </div>
-                <h3 className="font-serif text-xl md:text-2xl font-semibold">Kapcsolatfelvétel</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Hívjon minket telefonon, vagy töltse ki online űrlapunkat. Röviden ismertesse, milyen értéktárgyról van
-                  szó.
-                </p>
-              </div>
-
-              {/* Step 2 - Appraisal */}
-              <div className="flex flex-col items-center text-center space-y-4">
-                <div className="relative w-full aspect-square rounded-lg overflow-hidden shadow-lg mb-2">
-                  <Image
-                    src="/images/sections/expert-examining-jewelry-magnifying-glass-appraisal.jpg"
-                    alt="Szakértő értékbecslést végez"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  <div className="absolute top-4 left-4 w-12 h-12 bg-accent rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-accent-foreground font-serif text-2xl font-bold">2</span>
-                  </div>
-                </div>
-                <h3 className="font-serif text-xl md:text-2xl font-semibold">Szakértői értékbecslés</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Szakértőnk alaposan megvizsgálja tárgyát, és pontos, piaci alapú értékelést készít. Kérdezzen bátran!
-                </p>
-              </div>
-
-              {/* Step 3 - Decision */}
-              <div className="flex flex-col items-center text-center space-y-4">
-                <div className="relative w-full aspect-square rounded-lg overflow-hidden shadow-lg mb-2">
-                  <Image
-                    src="/images/sections/customer-signing-contract-handshake-agreement.jpg"
-                    alt="Ügyfél döntést hoz"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  <div className="absolute top-4 left-4 w-12 h-12 bg-accent rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-accent-foreground font-serif text-2xl font-bold">3</span>
-                  </div>
-                </div>
-                <h3 className="font-serif text-xl md:text-2xl font-semibold">Nyugodt döntés</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Ön nyugodtan mérlegelheti lehetőségeit: záloghitel, felvásárlás vagy piactéri értékesítés. Segítünk
-                  választani.
-                </p>
-              </div>
+              ))}
             </div>
 
-            {/* Additional Information */}
             <div className="mt-12 text-center">
               <p className="text-sm text-muted-foreground bg-card inline-block px-6 py-3 rounded-full border">
                 <strong>Fontos:</strong> A végső értéket mindig szakértő állapítja meg.
@@ -314,7 +257,7 @@ export default async function HomePage() {
         </section>
 
         {/* AI Appraisal Explainer */}
-        <section id="ai-ertekbecsles" className="py-16 md:py-24 bg-card scroll-mt-20">
+        <section className="py-16 md:py-24 bg-card">
           <div className="container mx-auto px-4 md:px-6 max-w-7xl">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left - Image */}
@@ -572,7 +515,7 @@ export default async function HomePage() {
         </section>
 
         {/* Final CTA + Contact */}
-        <section id="kapcsolat" className="py-16 md:py-24 bg-primary text-primary-foreground scroll-mt-20">
+        <section className="py-16 md:py-24 bg-primary text-primary-foreground">
           <div className="container mx-auto px-4 md:px-6 max-w-5xl text-center">
             <div className="space-y-8">
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-balance">
