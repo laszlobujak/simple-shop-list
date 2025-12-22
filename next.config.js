@@ -33,6 +33,14 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/piacter',
+        destination: '/marketplace',
+      },
+    ];
+  },
   async headers() {
     return [
       {
