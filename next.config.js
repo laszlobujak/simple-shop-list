@@ -39,6 +39,10 @@ const nextConfig = {
         source: '/piacter',
         destination: '/marketplace',
       },
+      {
+        source: '/ai-ertekbecslo',
+        destination: '/ai-valuer',
+      },
     ];
   },
   async headers() {

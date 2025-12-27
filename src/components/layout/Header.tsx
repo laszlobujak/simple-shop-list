@@ -21,7 +21,7 @@ export function Header() {
             {/* Desktop Navigation Menu */}
             <div className="hidden md:flex items-center gap-6">
               <Link
-                href="#ai-ertekbecsles"
+                href="/ai-ertekbecslo"
                 className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors"
               >
                 AI értékbecslés
@@ -65,7 +65,7 @@ export function Header() {
           <div className="md:hidden mt-4 pb-4 border-t border-border pt-4">
             <nav className="flex flex-col space-y-4">
               <Link
-                href="#ai-ertekbecsles"
+                href="/ai-ertekbecslo"
                 className="text-base font-medium text-muted-foreground hover:text-accent transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
