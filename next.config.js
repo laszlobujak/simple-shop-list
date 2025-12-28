@@ -33,6 +33,18 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/piacter',
+        destination: '/marketplace',
+      },
+      {
+        source: '/ai-ertekbecslo',
+        destination: '/ai-valuer',
+      },
+    ];
+  },
   async headers() {
     return [
       {
