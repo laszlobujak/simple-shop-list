@@ -193,7 +193,7 @@ export default async function HomePage() {
 
               {/* Right Column - Image */}
               <HeroImage
-                src="/images/hero/hero-jewelry.jpg"
+                src="/images/hero/hero-jewelry.webp"
                 alt="Ékszerek és értéktárgyak"
                 icon={Crown}
                 title="Értékes tárgyak"
@@ -245,7 +245,7 @@ export default async function HomePage() {
               <div className="flex flex-col items-center text-center space-y-4">
                 <div className="relative w-full aspect-square rounded-lg overflow-hidden shadow-lg mb-2">
                   <Image
-                    src="/images/sections/person-calling-phone-contact-consultation.jpg"
+                    src="/images/sections/person-calling-phone-contact-consultation.webp"
                     alt="Ügyfél telefonál"
                     fill
                     className="object-cover"
@@ -266,7 +266,7 @@ export default async function HomePage() {
               <div className="flex flex-col items-center text-center space-y-4">
                 <div className="relative w-full aspect-square rounded-lg overflow-hidden shadow-lg mb-2">
                   <Image
-                    src="/images/sections/expert-examining-jewelry-magnifying-glass-appraisal.jpg"
+                    src="/images/sections/expert-examining-jewelry-magnifying-glass-appraisal.webp"
                     alt="Szakértő értékbecslést végez"
                     fill
                     className="object-cover"
@@ -286,7 +286,7 @@ export default async function HomePage() {
               <div className="flex flex-col items-center text-center space-y-4">
                 <div className="relative w-full aspect-square rounded-lg overflow-hidden shadow-lg mb-2">
                   <Image
-                    src="/images/sections/customer-signing-contract-handshake-agreement.jpg"
+                    src="/images/sections/customer-signing-contract-handshake-agreement.webp"
                     alt="Ügyfél döntést hoz"
                     fill
                     className="object-cover"
@@ -320,7 +320,7 @@ export default async function HomePage() {
               {/* Left - Image */}
               <div className="order-2 lg:order-1">
                 <HeroImage
-                  src="/images/sections/ai-appraisal.jpg"
+                  src="/images/sections/ai-appraisal.webp"
                   alt="AI technológia értékbecsléshez"
                   icon={Sparkles}
                   title="AI Technológia"
@@ -495,7 +495,7 @@ export default async function HomePage() {
 
               {/* Right - Image */}
               <HeroImage
-                src="/images/sections/marketplace.jpg"
+                src="/images/sections/marketplace.webp"
                 alt="Online piactér értéktárgyakhoz"
                 icon={ShoppingBag}
                 title="Online Piactér"
