@@ -40,6 +40,10 @@ const nextConfig = {
         destination: '/marketplace',
       },
       {
+        source: '/piacter/:id',
+        destination: '/marketplace/:id',
+      },
+      {
         source: '/ai-ertekbecslo',
         destination: '/ai-valuer',
       },
