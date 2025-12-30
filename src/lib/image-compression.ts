@@ -2,6 +2,7 @@ import imageCompression from 'browser-image-compression';
 
 export interface CompressionOptions {
   maxWidthOrHeight?: number;
+  maxSizeMB?: number;
   quality?: number;
   fileType?: 'image/jpeg' | 'image/webp' | 'image/png';
   useWebWorker?: boolean;
@@ -9,7 +10,7 @@ export interface CompressionOptions {
 
 const DEFAULT_OPTIONS: CompressionOptions = {
   maxWidthOrHeight: 1920,
-  quality: 0.8,
+  maxSizeMB: 1, // 1MB,
   fileType: 'image/jpeg',
   useWebWorker: false, // Disabled to avoid CSP issues with external scripts
 };
@@ -27,8 +28,8 @@ export async function compressImage(
   const compressionOptions = { ...DEFAULT_OPTIONS, ...options };
 
   try {
-    // Only compress if file is larger than 500KB
-    if (file.size <= 500 * 1024) {
+    // Only compress if file is larger than maxSizeMB (in bytes)
+    if (file.size <= compressionOptions.maxSizeMB * 1024 * 1024) {
       return file;
     }
 
