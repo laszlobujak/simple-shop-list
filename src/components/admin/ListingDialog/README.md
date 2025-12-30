@@ -90,3 +90,4 @@ Compresses multiple image files in parallel.
 - ✅ Responsive UI with loading states
 
 
+
