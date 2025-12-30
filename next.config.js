@@ -43,6 +43,10 @@ const nextConfig = {
         source: '/ai-ertekbecslo',
         destination: '/ai-valuer',
       },
+      {
+        source: '/kapcsolat',
+        destination: '/contact',
+      },
     ];
   },
   async headers() {

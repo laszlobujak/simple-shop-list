@@ -5,7 +5,7 @@ import { MobileMenuToggle } from "./MobileMenuToggle";
 const NAV_LINKS = [
   { href: "/ai-ertekbecslo", label: "AI értékbecslés" },
   { href: "/piacter", label: "Piactér" },
-  { href: "#kapcsolat", label: "Kapcsolat" },
+  { href: "/kapcsolat", label: "Kapcsolat" },
 ];
 
 const PHONE_NUMBER = "+36 1 234 5678";

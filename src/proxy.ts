@@ -13,6 +13,7 @@ export default function proxy(request: NextRequest) {
     font-src 'self' data:;
     connect-src 'self' https://*.public.blob.vercel-storage.com;
     worker-src 'self' blob:;
+    frame-src https://www.google.com https://maps.google.com;
     frame-ancestors 'none';
     base-uri 'self';
     form-action 'self';
