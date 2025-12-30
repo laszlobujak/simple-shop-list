@@ -23,14 +23,14 @@ export interface Listing {
 }
 
 export const CATEGORY_LABELS: Record<ListingCategory, string> = {
-  jewelry: 'Jewelry',
-  watches: 'Watches',
-  art: 'Art',
-  furniture: 'Furniture',
-  collectibles: 'Collectibles',
-  antiques: 'Antiques',
-  fashion: 'Fashion',
-  other: 'Other',
+  jewelry: 'Ékszerek',
+  watches: 'Órák',
+  art: 'Műtárgyak',
+  furniture: 'Bútorok',
+  collectibles: 'Gyűjtemények',
+  antiques: 'Régiségek',
+  fashion: 'Divat',
+  other: 'Egyéb',
 };
 
 export const STATUS_LABELS: Record<ListingStatus, string> = {

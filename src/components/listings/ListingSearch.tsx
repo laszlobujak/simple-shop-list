@@ -34,7 +34,7 @@ export function ListingSearch({ initialListings }: ListingSearchProps) {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             type="text"
-            placeholder="Search by title or description..."
+            placeholder="Keresés cím vagy leírás alapján..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 font-sans"
@@ -48,11 +48,11 @@ export function ListingSearch({ initialListings }: ListingSearchProps) {
           <Button
             key={cat}
             variant={selectedCategory === cat ? 'default' : 'outline'}
-            size="sm"
+            size="default"
             onClick={() => setSelectedCategory(cat)}
-            className="font-sans text-xs uppercase tracking-wider"
+            className="font-sans text-sm uppercase tracking-wider px-6 py-3"
           >
-            {cat === 'all' ? 'All' : CATEGORY_LABELS[cat]}
+            {cat === 'all' ? 'Összes' : CATEGORY_LABELS[cat]}
           </Button>
         ))}
       </div>

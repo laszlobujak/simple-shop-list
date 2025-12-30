@@ -9,6 +9,14 @@ import { ListingDetails } from '@/components/listings/ListingDetails';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { cache } from 'react';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from '@/components/ui/breadcrumb';
 
 interface ListingPageProps {
   params: Promise<{ id: string }>;
@@ -97,6 +105,27 @@ export default async function ListingDetailPage({ params }: ListingPageProps) {
       
       <main className="flex-1">
         <div className="container mx-auto px-4 py-8">
+          {/* Breadcrumb Navigation */}
+          <Breadcrumb className="mb-6">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/">Főoldal</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/piacter">Piactér</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{listing.title}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+
           {/* Back Link */}
           <Link 
             href="/piacter" 

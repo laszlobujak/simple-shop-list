@@ -34,7 +34,7 @@ export function ListingCard({ listing }: ListingCardProps) {
             variant="secondary" 
             className="absolute top-3 left-3 bg-accent text-accent-foreground font-sans text-xs"
           >
-            Reserved
+            Foglalt
           </Badge>
         )}
       </div>

@@ -21,7 +21,7 @@ export function ListingDetails({ listing, formatPrice }: ListingDetailsProps) {
           </h1>
           {listing.status === 'reserved' && (
             <Badge className="bg-accent text-accent-foreground font-sans text-xs">
-              Reserved
+              Foglalt
             </Badge>
           )}
         </div>
@@ -33,7 +33,7 @@ export function ListingDetails({ listing, formatPrice }: ListingDetailsProps) {
 
       <div className="border-t border-border pt-6">
         <h2 className="font-sans text-sm uppercase tracking-wider text-muted-foreground mb-3">
-          Description
+          Leírás
         </h2>
         <p className="font-sans text-foreground leading-relaxed whitespace-pre-line">
           {listing.description}
@@ -43,12 +43,12 @@ export function ListingDetails({ listing, formatPrice }: ListingDetailsProps) {
       {/* CTA */}
       <div className="border-t border-border pt-6 space-y-4">
         <p className="font-sans text-sm text-muted-foreground">
-          Interested in this piece? Contact our specialists to arrange a viewing or learn more.
+          Érdekli ez a darab? Vegye fel velünk a kapcsolatot konzultációért vagy megtekintésért.
         </p>
-        <a href="tel:+1234567890" className="block">
+        <a href="tel:+3612345678" className="block">
           <Button size="lg" className="w-full font-sans gap-2">
             <Phone className="h-4 w-4" />
-            Call (123) 456-7890
+            Hívás: +36 1 234 5678
           </Button>
         </a>
       </div>
