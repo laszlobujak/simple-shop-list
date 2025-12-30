@@ -28,7 +28,7 @@ export function ListingShowcase({ listings, maxItems = 4 }: ListingShowcaseProps
           const price = listing.price ? `${listing.price.toLocaleString('hu-HU')} Ft` : 'Ár egyeztetés alapján';
 
           return (
-            <Link key={listing.id} href={`/listing/${listing.id}`}>
+            <Link key={listing.id} href={`/piacter/${listing.id}`}>
               <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 h-full group">
                 <div className="relative aspect-square overflow-hidden bg-muted">
                   {mainImage ? (

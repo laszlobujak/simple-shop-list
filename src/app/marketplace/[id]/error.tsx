@@ -41,9 +41,9 @@ export default function ListingError({
           >
             Try again
           </Button>
-          <Link href="/">
+          <Link href="/piacter">
             <Button variant="outline">
-              Browse all listings
+              Vissza a piactérre
             </Button>
           </Link>
         </div>
@@ -51,3 +51,4 @@ export default function ListingError({
     </div>
   );
 }
+
