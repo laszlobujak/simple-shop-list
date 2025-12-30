@@ -8,7 +8,7 @@ export async function revalidateListings() {
 
   // Also revalidate paths for page-level cache
   revalidatePath('/', 'page');
-  revalidatePath('/listing/[id]', 'page');
+  revalidatePath('/marketplace/[id]', 'page');
   revalidatePath('/admin/dashboard', 'page');
 
   console.log('[Cache] Revalidated all listings via tags and paths');
@@ -23,7 +23,7 @@ export async function revalidateListingById(id: string) {
   revalidateTag('public-listings', 'max');
 
   // Revalidate paths for page-level cache
-  revalidatePath(`/listing/${id}`, 'page');
+  revalidatePath(`/marketplace/${id}`, 'page');
   revalidatePath('/', 'page');
   revalidatePath('/admin/dashboard', 'page');
 

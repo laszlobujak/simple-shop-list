@@ -99,11 +99,11 @@ export default async function ListingDetailPage({ params }: ListingPageProps) {
         <div className="container mx-auto px-4 py-8">
           {/* Back Link */}
           <Link 
-            href="/" 
+            href="/piacter" 
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span className="font-sans text-sm">Back to collection</span>
+            <span className="font-sans text-sm">Vissza a piactérre</span>
           </Link>
 
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">

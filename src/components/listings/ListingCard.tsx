@@ -18,7 +18,7 @@ export function ListingCard({ listing }: ListingCardProps) {
 
   return (
     <Link 
-      href={`/listing/${listing.id}`}
+      href={`/piacter/${listing.id}`}
       className="group block"
     >
       <div className="relative aspect-square overflow-hidden bg-muted rounded-sm">
