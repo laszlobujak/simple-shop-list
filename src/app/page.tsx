@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { getPublicListingsCached } from '@/lib/listings-cached';
@@ -9,9 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import {
   Shield,
-  Clock,
   Sparkles,
-  Home,
   CheckCircle2,
   Crown,
   ShoppingBag,
@@ -151,11 +150,11 @@ export default async function HomePage() {
               <div className="space-y-8">
                 <div className="space-y-4">
                   <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-balance leading-tight">
-                    Korrekt értékbecslés, nyugodt döntések.
+                    AI-alapú értékbecslés - másodpercek alatt
                   </h1>
                   <p className="text-lg md:text-xl text-muted-foreground text-pretty leading-relaxed">
-                    Szakértői értékbecslés, záloghitel, felvásárlás és tanácsadás. Nem siettetjük ügyfeleinket – segítünk
-                    nyugodt körülmények között meghozni a legjobb döntést értéktárgyai sorsáról.
+                    Töltse fel ékszere fotóját, és mesterséges intelligenciánk azonnal előzetes árajánlatot ad.
+                    Szakértőink személyesen is megerősítik a becslést.
                   </p>
                 </div>
 
@@ -167,7 +166,7 @@ export default async function HomePage() {
                   </div>
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
-                    <span className="text-sm md:text-base">3 szakember – több szakterület</span>
+                    <span className="text-sm md:text-base">3 szakember - több szakterület</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
@@ -181,12 +180,14 @@ export default async function HomePage() {
 
                 {/* CTAs */}
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="text-base md:text-lg px-8 py-6 bg-primary hover:bg-primary/90">
-                    Értékbecslést kérek
+                  <Button size="lg" className="text-base md:text-lg px-8 py-6 bg-primary hover:bg-primary/90" asChild>
+                    <Link href="/ai-ertekbecslo">AI értékbecslés</Link>
                   </Button>
-                  <Button size="lg" variant="outline" className="text-base md:text-lg px-8 py-6 border-2 bg-transparent">
-                    <Crown className="w-5 h-5 mr-2" />
-                    Házhoz megyünk (VIP)
+                  <Button size="lg" variant="outline" className="text-base md:text-lg px-8 py-6 border-2 bg-transparent" asChild>
+                    <Link href="#hazhoz-megyunk">
+                      <Crown className="w-5 h-5 mr-2" />
+                      Házhoz megyünk (VIP)
+                    </Link>
                   </Button>
                 </div>
               </div>
@@ -236,7 +237,7 @@ export default async function HomePage() {
             <div className="text-center mb-12 md:mb-16">
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Hogyan működik?</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Egyszerű, átlátható folyamat – lépésről lépésre.
+                Egyszerű, átlátható folyamat - lépésről lépésre.
               </p>
             </div>
 
@@ -337,7 +338,7 @@ export default async function HomePage() {
                 </div>
 
                 <h2 className="font-serif text-3xl md:text-4xl font-bold">
-                  AI értékbecslés – gyors előzetes tájékoztatás
+                  AI értékbecslés - gyors előzetes tájékoztatás
                 </h2>
 
                 <p className="text-lg text-muted-foreground leading-relaxed">
@@ -384,7 +385,7 @@ export default async function HomePage() {
         </section>
 
         {/* VIP Home Visit */}
-        <section className="py-16 md:py-24 bg-accent/10 border-y-2 border-accent/30">
+        <section id="hazhoz-megyunk" className="py-16 md:py-24 bg-accent/10 border-y-2 border-accent/30">
           <div className="container mx-auto px-4 md:px-6 max-w-5xl">
             <div className="text-center space-y-6">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent rounded-full">
@@ -395,42 +396,79 @@ export default async function HomePage() {
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold">Házhoz megy az értékbecslő</h2>
 
               <p className="text-lg text-foreground/90 max-w-3xl mx-auto leading-relaxed">
-                Nagyobb, törékeny vagy nehezen szállítható értéktárgyak esetén szakértőnk Önhöz látogat. Előre egyeztetett
-                időpontban, diszkréten, biztonságosan végezzük az értékbecslést az Ön otthonában.
+                Szakértőnk Önhöz látogat - előre egyeztetett időpontban, diszkréten, biztonságosan.
               </p>
 
-              <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto pt-6">
-                <div className="flex flex-col items-center gap-3 text-center">
-                  <Home className="w-10 h-10 text-accent" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Otthonában</h4>
-                    <p className="text-sm text-muted-foreground">Kényelmes és biztonságos</p>
-                  </div>
-                </div>
-                <div className="flex flex-col items-center gap-3 text-center">
-                  <Clock className="w-10 h-10 text-accent" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Időpont alapú</h4>
-                    <p className="text-sm text-muted-foreground">Önnek megfelelő időben</p>
-                  </div>
-                </div>
-                <div className="flex flex-col items-center gap-3 text-center">
-                  <Shield className="w-10 h-10 text-accent" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Diszkréció</h4>
-                    <p className="text-sm text-muted-foreground">Teljes körű titoktartás</p>
-                  </div>
-                </div>
+              {/* Two Options Grid */}
+              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto pt-8">
+                {/* Option 1: Gold Purchase */}
+                <Card className="border-2 border-accent/50 bg-background">
+                  <CardContent className="p-8 text-center space-y-4">
+                    <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto">
+                      <Coins className="w-8 h-8 text-accent" />
+                    </div>
+                    <h3 className="font-serif text-2xl font-bold">Arany felvásárlás helyben</h3>
+                    <p className="text-muted-foreground">
+                      Arany ékszereit helyben, az Ön otthonában vásároljuk fel. Azonnali készpénzfizetés, átlátható árazás.
+                    </p>
+                    <ul className="text-sm text-left space-y-2 pt-2">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
+                        <span>Azonnali készpénz</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
+                        <span>Világpiaci áron számolunk</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
+                        <span>Helyszíni mérés és vizsgálat</span>
+                      </li>
+                    </ul>
+                    <Button size="lg" className="w-full mt-4" asChild>
+                      <Link href="/kapcsolat">
+                        <Phone className="w-5 h-5 mr-2" />
+                        Időpontot kérek
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                {/* Option 2: Marketplace */}
+                <Card className="border-2 border-primary/30 bg-background">
+                  <CardContent className="p-8 text-center space-y-4">
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                      <ShoppingBag className="w-8 h-8 text-primary" />
+                    </div>
+                    <h3 className="font-serif text-2xl font-bold">Nagyobb ingóságok piactéren</h3>
+                    <p className="text-muted-foreground">
+                      Bútorok, festmények, műtárgyak, gyűjtemények - segítünk a piactéren keresztül értékesíteni.
+                    </p>
+                    <ul className="text-sm text-left space-y-2 pt-2">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                        <span>Professzionális fotózás</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                        <span>Hirdetés a piacterünkön</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                        <span>Magasabb eladási ár lehetséges</span>
+                      </li>
+                    </ul>
+                    <Button size="lg" variant="outline" className="w-full mt-4 border-2" asChild>
+                      <Link href="/piacter">
+                        <ShoppingBag className="w-5 h-5 mr-2" />
+                        Piactér megtekintése
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
               </div>
 
-              <div className="pt-6">
-                <Button size="lg" className="text-base md:text-lg px-8 py-6 bg-primary hover:bg-primary/90">
-                  <Phone className="w-5 h-5 mr-2" />
-                  Időpontot kérek házhoz
-                </Button>
-              </div>
-
-              <p className="text-sm text-muted-foreground italic pt-4">
+              <p className="text-sm text-muted-foreground italic pt-6">
                 Biztonság: Szakértőink azonosító igazolvánnyal érkeznek. Minden értékbecslésről írásos dokumentumot adunk.
               </p>
             </div>
@@ -451,7 +489,7 @@ export default async function HomePage() {
                 <h2 className="font-serif text-3xl md:text-4xl font-bold">Piactér: segítünk az értékesítésben</h2>
 
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                  Nem csak felvásárlást kínálunk – közvetítőként is segítünk értéktárgyai értékesítésében. Piacterünkön
+                  Nem csak felvásárlást kínálunk - közvetítőként is segítünk értéktárgyai értékesítésében. Piacterünkön
                   érdeklődő vásárlókkal hozzuk össze Önt, biztonságos és szervezett keretek között.
                 </p>
 
@@ -487,8 +525,8 @@ export default async function HomePage() {
                 </div>
 
                 <div className="pt-4">
-                  <Button size="lg" variant="outline" className="text-base border-2 bg-transparent">
-                    Szeretném eladni – érdeklődöm
+                  <Button size="lg" variant="outline" className="text-base border-2 bg-transparent" asChild>
+                    <Link href="/kapcsolat">Szeretném eladni - érdeklődöm</Link>
                   </Button>
                 </div>
               </div>
@@ -586,20 +624,23 @@ export default async function HomePage() {
 
               <div className="flex items-center justify-center gap-2 text-lg">
                 <MapPin className="w-5 h-5" />
-                <span>Nyugati pályaudvar környéke – könnyen megközelíthető</span>
+                <span>Nyugati pályaudvar környéke - könnyen megközelíthető</span>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                <Button size="lg" variant="secondary" className="text-base md:text-lg px-8 py-6">
-                  <Phone className="w-5 h-5 mr-2" />
-                  Hívás indítása
+                <Button size="lg" variant="secondary" className="text-base md:text-lg px-8 py-6" asChild>
+                  <Link href="/kapcsolat">
+                    <Phone className="w-5 h-5 mr-2" />
+                    Hívás indítása
+                  </Link>
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
                   className="text-base md:text-lg px-8 py-6 border-2 border-primary-foreground/30 hover:bg-primary-foreground/10 text-primary-foreground bg-transparent"
+                  asChild
                 >
-                  Űrlap kitöltése
+                  <Link href="/kapcsolat">Űrlap kitöltése</Link>
                 </Button>
               </div>
 
