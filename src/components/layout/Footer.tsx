@@ -38,7 +38,13 @@ export function Footer() {
               href="/adatvedelem"
               className="text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
-              Adatvédelmi nyilatkozat
+              Adatvédelem
+            </Link>
+            <Link
+              href="/felhasznalasi-feltetelek"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Feltételek
             </Link>
             <Link
               href="/admin"
