@@ -21,10 +21,10 @@ export function Footer() {
               <span>Nyugati pályaudvar környéke, Budapest</span>
             </div>
             <a
-              href="tel:+3612345678"
+              href="tel:+3613540555"
               className="text-sm text-foreground hover:text-accent transition-colors"
             >
-              +36 1 234 5678
+              +36 1 354 0555
             </a>
           </div>
         </div>

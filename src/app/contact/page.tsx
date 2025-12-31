@@ -19,7 +19,7 @@ import {
 export const metadata: Metadata = {
   title: "Kapcsolat - Értékbecslés & Zálog",
   description:
-    "Vegye fel velünk a kapcsolatot! Személyes konzultáció, értékbecslés, záloghitel. Cím: 1062 Budapest, Teréz körút 55. Telefon: +36 1 234 5678",
+    "Vegye fel velünk a kapcsolatot! Személyes konzultáció, értékbecslés, záloghitel. Cím: 1062 Budapest, Teréz körút 55. Telefon: +36 1 354 0555",
   keywords: [
     "kapcsolat",
     "értékbecslés budapest",

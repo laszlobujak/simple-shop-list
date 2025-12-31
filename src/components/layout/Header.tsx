@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { href: "/kapcsolat", label: "Kapcsolat" },
 ];
 
-const PHONE_NUMBER = "+36 1 234 5678";
+const PHONE_NUMBER = "+36 1 354 0555";
 
 export function Header() {
   return (

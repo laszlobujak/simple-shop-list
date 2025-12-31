@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 
 export default function TermsOfServicePage() {
   const { address, phone, email } = contactInfo;
-  const companyName = "Értékbecslés & Zálog Kft.";
-  const websiteUrl = "https://www.ertekbecsles-zalog.hu";
+  const companyName = "ÁRVA PETÁK 2001 Kft.";
+  const websiteUrl = "https://www.ertekbecsleshazhoz.hu";
 
   return (
     <div className="min-h-screen flex flex-col bg-background">

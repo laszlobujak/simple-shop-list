@@ -646,7 +646,7 @@ export default async function HomePage() {
 
               <div className="pt-8 opacity-75 text-sm">
                 <p>
-                  Telefonon: <strong>+36 1 234 5678</strong>
+                  Telefonon: <strong>+36 1 354 0555</strong>
                 </p>
                 <p className="mt-1">
                   Email: <strong>info@ertekbecsles.hu</strong>
