@@ -21,10 +21,10 @@ export function Footer() {
               <span>Nyugati pályaudvar környéke, Budapest</span>
             </div>
             <a
-              href="tel:+3612345678"
+              href="tel:+3613540555"
               className="text-sm text-foreground hover:text-accent transition-colors"
             >
-              +36 1 234 5678
+              +36 1 354 0555
             </a>
           </div>
         </div>
@@ -33,12 +33,26 @@ export function Footer() {
           <p className="text-xs text-muted-foreground">
             © {new Date().getFullYear()} Értékbecslés & Zálog. Minden jog fenntartva.
           </p>
-          <Link
-            href="/admin"
-            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Admin
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/adatvedelem"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Adatvédelem
+            </Link>
+            <Link
+              href="/felhasznalasi-feltetelek"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Feltételek
+            </Link>
+            <Link
+              href="/admin"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Admin
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

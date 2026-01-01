@@ -5,13 +5,13 @@ export const contactInfo = {
     city: 'Budapest',
     zip: '1062',
     country: 'Magyarország',
-    full: '1062 Budapest, Teréz körút 55.',
+    full: '1062 Budapest, Teréz krt. 55.',
   },
   phone: {
-    display: '+36 1 234 5678',
-    href: '+3612345678',
+    display: '+36 1 354 0555',
+    href: '+3613540555',
   },
-  email: 'info@ertekbecsles-zalog.hu',
+  email: 'zalogfioknyugati@hotmail.com',
   openingHours: [
     { day: 'Hétfő - Péntek', hours: '09:00 - 18:00' },
     { day: 'Szombat', hours: '10:00 - 14:00' },

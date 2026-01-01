@@ -45,10 +45,10 @@ export function ListingDetails({ listing, formatPrice }: ListingDetailsProps) {
         <p className="font-sans text-sm text-muted-foreground">
           Érdekli ez a darab? Vegye fel velünk a kapcsolatot konzultációért vagy megtekintésért.
         </p>
-        <a href="tel:+3612345678" className="block">
+        <a href="tel:+3613540555" className="block">
           <Button size="lg" className="w-full font-sans gap-2">
             <Phone className="h-4 w-4" />
-            Hívás: +36 1 234 5678
+            Hívás: +36 1 354 0555
           </Button>
         </a>
       </div>

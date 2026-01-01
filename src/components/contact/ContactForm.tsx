@@ -237,12 +237,12 @@ export function ContactForm() {
                   >
                     Elfogadom az{" "}
                     <a
-                      href="/adatkezelesi-tajekoztato"
+                      href="/adatvedelem"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-accent hover:text-accent/80 underline"
                     >
-                      adatkezelési tájékoztatót
+                      adatvédelmi nyilatkozatot
                     </a>{" "}
                     és hozzájárulok személyes adataim kezeléséhez. *
                   </label>

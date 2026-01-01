@@ -637,7 +637,7 @@ export function AIAppraisalForm() {
             <div className="space-y-2">
               <Phone className="w-10 h-10 mx-auto mb-3 text-accent" />
               <p className="text-lg font-semibold">Telefonszám</p>
-              <p className="text-base opacity-80">+36 1 234 5678</p>
+              <p className="text-base opacity-80">+36 1 354 0555</p>
             </div>
             <div className="space-y-2">
               <MapPin className="w-10 h-10 mx-auto mb-3 text-accent" />
