@@ -1,4 +1,5 @@
 import { Playfair_Display, DM_Sans } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import { Providers } from "./providers";
 import "./globals.css";
 
@@ -55,6 +56,7 @@ export default function RootLayout({
     <html lang="hu" className={`${playfair.variable} ${dmSans.variable}`}>
       <body className="font-sans antialiased">
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );
