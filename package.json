@@ -47,6 +47,7 @@
     "@t3-oss/env-nextjs": "^0.13.10",
     "@tanstack/react-form": "^1.27.5",
     "@tanstack/react-query": "^5.90.12",
+    "@vercel/analytics": "^1.6.1",
     "@vercel/blob": "^2.0.0",
     "better-auth": "^1.4.7",
     "browser-image-compression": "^2.0.2",
