@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 
     // Send email via Resend
     const { data, error } = await resend.emails.send({
-      from: 'onboarding@resend.dev', // Default Resend sender - update with your verified domain
+      from: 'kapcsolat@ertekbecsleshazhoz.hu', // Default Resend sender - update with your verified domain
       to: contactInfo.email,
       subject: emailSubject,
       html: emailHtml,

@@ -11,7 +11,7 @@ export const contactInfo = {
     display: '+36 1 354 0555',
     href: '+3613540555',
   },
-  email: 'zalogfioknyugati@hotmail.com',
+  email: 'zalogfiok@hotmail.com',
   openingHours: [
     { day: 'Hétfő - Péntek', hours: '09:00 - 18:00' },
     { day: 'Szombat', hours: '10:00 - 14:00' },
