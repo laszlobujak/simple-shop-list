@@ -38,9 +38,19 @@ export function ContactForm() {
     setIsSubmitting(true);
 
     try {
-      // Mock API call - replace with actual endpoint
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Contact form submitted:", value);
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(value),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to send message');
+      }
+
       setIsSuccess(true);
     } catch (error) {
       console.error("Error submitting contact form:", error);

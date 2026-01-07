@@ -37,6 +37,8 @@ export const env = createEnv({
     BLOB_READ_WRITE_TOKEN: z.string().optional(),
     // Gemini AI
     GEMINI_API_KEY: z.string().min(1),
+    // Resend
+    RESEND_API_KEY: z.string().min(1),
   },
 
   /**
@@ -83,6 +85,8 @@ export const env = createEnv({
     BLOB_READ_WRITE_TOKEN: process.env.BLOB_READ_WRITE_TOKEN,
     // Gemini AI
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    // Resend
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
     // Client-side
     NEXT_PUBLIC_STACK_PROJECT_ID: process.env.NEXT_PUBLIC_STACK_PROJECT_ID,
     NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY: process.env.NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY,
