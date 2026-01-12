@@ -13,8 +13,8 @@ export const contactInfo = {
   },
   email: 'zalogfiok@hotmail.com',
   openingHours: [
-    { day: 'Hétfő - Péntek', hours: '09:00 - 18:00' },
-    { day: 'Szombat', hours: '10:00 - 14:00' },
+    { day: 'Hétfő - Péntek', hours: '09:00 - 19:00' },
+    { day: 'Szombat', hours: '08:00 - 12:00' },
     { day: 'Vasárnap', hours: 'Zárva' },
   ],
   mapCoordinates: {
