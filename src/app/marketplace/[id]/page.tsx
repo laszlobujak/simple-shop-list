@@ -9,6 +9,7 @@ import { ListingDetails } from '@/components/listings/ListingDetails';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { cache } from 'react';
+import { isMarketplaceEnabled } from '@/lib/feature-flags';
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -24,6 +25,11 @@ interface ListingPageProps {
 
 // Generate static params for all active/reserved listings at build time
 export async function generateStaticParams() {
+  // Return empty array if marketplace feature is disabled
+  if (!isMarketplaceEnabled()) {
+    return [];
+  }
+
   const listings = await getPublicListingsCached();
 
   // Pre-render ALL listings (not just top 50)
@@ -84,6 +90,11 @@ export async function generateMetadata({ params }: ListingPageProps): Promise<Me
 }
 
 export default async function ListingDetailPage({ params }: ListingPageProps) {
+  // Return 404 if marketplace feature is disabled
+  if (!isMarketplaceEnabled()) {
+    notFound();
+  }
+
   const { id } = await params;
   const listing = await getCachedListing(id);
 

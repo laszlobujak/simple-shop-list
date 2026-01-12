@@ -50,6 +50,13 @@ export const env = createEnv({
     NEXT_PUBLIC_STACK_PROJECT_ID: z.string().optional(),
     NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY: z.string().optional(),
     NEXT_PUBLIC_BETTER_AUTH_URL: z.url().optional(),
+    // Feature Flags
+    NEXT_PUBLIC_ENABLE_MARKETPLACE: z
+      .string()
+      .optional()
+      .transform((val) => val === 'true')
+      .pipe(z.boolean())
+      .default(false),
   },
 
   /**
@@ -91,6 +98,8 @@ export const env = createEnv({
     NEXT_PUBLIC_STACK_PROJECT_ID: process.env.NEXT_PUBLIC_STACK_PROJECT_ID,
     NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY: process.env.NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY,
     NEXT_PUBLIC_BETTER_AUTH_URL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
+    // Feature Flags
+    NEXT_PUBLIC_ENABLE_MARKETPLACE: process.env.NEXT_PUBLIC_ENABLE_MARKETPLACE,
   },
   /**
    * Run `build` or `dev` with SKIP_ENV_VALIDATION to skip env validation. This is especially

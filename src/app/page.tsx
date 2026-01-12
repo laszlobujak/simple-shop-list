@@ -8,6 +8,7 @@ import { HeroImage } from '@/components/ui/hero-image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { isMarketplaceEnabled } from '@/lib/feature-flags';
 import {
   Shield,
   Sparkles,
@@ -435,37 +436,39 @@ export default async function HomePage() {
                 </Card>
 
                 {/* Option 2: Marketplace */}
-                <Card className="border-2 border-primary/30 bg-background">
-                  <CardContent className="p-8 text-center space-y-4">
-                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                      <ShoppingBag className="w-8 h-8 text-primary" />
-                    </div>
-                    <h3 className="font-serif text-2xl font-bold">Nagyobb ingóságok piactéren</h3>
-                    <p className="text-muted-foreground">
-                      Bútorok, festmények, műtárgyak, gyűjtemények - segítünk a piactéren keresztül értékesíteni.
-                    </p>
-                    <ul className="text-sm text-left space-y-2 pt-2">
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                        <span>Professzionális fotózás</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                        <span>Hirdetés a piacterünkön</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                        <span>Magasabb eladási ár lehetséges</span>
-                      </li>
-                    </ul>
-                    <Button size="lg" variant="outline" className="w-full mt-4 border-2" asChild>
-                      <Link href="/piacter">
-                        <ShoppingBag className="w-5 h-5 mr-2" />
-                        Piactér megtekintése
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
+                {isMarketplaceEnabled() && (
+                  <Card className="border-2 border-primary/30 bg-background">
+                    <CardContent className="p-8 text-center space-y-4">
+                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                        <ShoppingBag className="w-8 h-8 text-primary" />
+                      </div>
+                      <h3 className="font-serif text-2xl font-bold">Nagyobb ingóságok piactéren</h3>
+                      <p className="text-muted-foreground">
+                        Bútorok, festmények, műtárgyak, gyűjtemények - segítünk a piactéren keresztül értékesíteni.
+                      </p>
+                      <ul className="text-sm text-left space-y-2 pt-2">
+                        <li className="flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                          <span>Professzionális fotózás</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                          <span>Hirdetés a piacterünkön</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                          <span>Magasabb eladási ár lehetséges</span>
+                        </li>
+                      </ul>
+                      <Button size="lg" variant="outline" className="w-full mt-4 border-2" asChild>
+                        <Link href="/piacter">
+                          <ShoppingBag className="w-5 h-5 mr-2" />
+                          Piactér megtekintése
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
 
               <p className="text-sm text-muted-foreground italic pt-6">
@@ -476,84 +479,86 @@ export default async function HomePage() {
         </section>
 
         {/* Marketplace Section with Listings */}
-        <section className="py-16 md:py-24 bg-card">
-          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-            <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-              {/* Left - Content */}
-              <div className="space-y-6">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-muted rounded-full">
-                  <ShoppingBag className="w-5 h-5 text-muted-foreground" />
-                  <span className="text-sm font-semibold">Értékesítési Lehetőség</span>
+        {isMarketplaceEnabled() && (
+          <section className="py-16 md:py-24 bg-card">
+            <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+              <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+                {/* Left - Content */}
+                <div className="space-y-6">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-muted rounded-full">
+                    <ShoppingBag className="w-5 h-5 text-muted-foreground" />
+                    <span className="text-sm font-semibold">Értékesítési Lehetőség</span>
+                  </div>
+
+                  <h2 className="font-serif text-3xl md:text-4xl font-bold">Piactér: segítünk az értékesítésben</h2>
+
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    Nem csak felvásárlást kínálunk - közvetítőként is segítünk értéktárgyai értékesítésében. Piacterünkön
+                    érdeklődő vásárlókkal hozzuk össze Önt, biztonságos és szervezett keretek között.
+                  </p>
+
+                  <div className="space-y-4 pt-4">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                      <div>
+                        <h4 className="font-semibold mb-1">Közvetítői modell</h4>
+                        <p className="text-sm text-muted-foreground">Összekötjük eladókat és vásárlókat</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                      <div>
+                        <h4 className="font-semibold mb-1">Mi kezeljük az érdeklődéseket</h4>
+                        <p className="text-sm text-muted-foreground">Nem kell közvetlenül foglalkoznia a vevőkkel</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                      <div>
+                        <h4 className="font-semibold mb-1">Biztonságos folyamat</h4>
+                        <p className="text-sm text-muted-foreground">Ellenőrzött, szervezett értékesítés</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                      <div>
+                        <h4 className="font-semibold mb-1">Jobb ár lehetséges</h4>
+                        <p className="text-sm text-muted-foreground">A piaci kereslet szerint</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-4">
+                    <Button size="lg" variant="outline" className="text-base border-2 bg-transparent" asChild>
+                      <Link href="/kapcsolat">Szeretném eladni - érdeklődöm</Link>
+                    </Button>
+                  </div>
                 </div>
 
-                <h2 className="font-serif text-3xl md:text-4xl font-bold">Piactér: segítünk az értékesítésben</h2>
-
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  Nem csak felvásárlást kínálunk - közvetítőként is segítünk értéktárgyai értékesítésében. Piacterünkön
-                  érdeklődő vásárlókkal hozzuk össze Önt, biztonságos és szervezett keretek között.
-                </p>
-
-                <div className="space-y-4 pt-4">
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
-                    <div>
-                      <h4 className="font-semibold mb-1">Közvetítői modell</h4>
-                      <p className="text-sm text-muted-foreground">Összekötjük eladókat és vásárlókat</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
-                    <div>
-                      <h4 className="font-semibold mb-1">Mi kezeljük az érdeklődéseket</h4>
-                      <p className="text-sm text-muted-foreground">Nem kell közvetlenül foglalkoznia a vevőkkel</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
-                    <div>
-                      <h4 className="font-semibold mb-1">Biztonságos folyamat</h4>
-                      <p className="text-sm text-muted-foreground">Ellenőrzött, szervezett értékesítés</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
-                    <div>
-                      <h4 className="font-semibold mb-1">Jobb ár lehetséges</h4>
-                      <p className="text-sm text-muted-foreground">A piaci kereslet szerint</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-4">
-                  <Button size="lg" variant="outline" className="text-base border-2 bg-transparent" asChild>
-                    <Link href="/kapcsolat">Szeretném eladni - érdeklődöm</Link>
-                  </Button>
-                </div>
+                {/* Right - Image */}
+                <HeroImage
+                  src="/images/sections/marketplace.webp"
+                  alt="Online piactér értéktárgyakhoz"
+                  icon={ShoppingBag}
+                  title="Online Piactér"
+                  subtitle="Biztonságos értékesítés"
+                  className="relative h-[400px] rounded-lg overflow-hidden shadow-lg"
+                />
               </div>
 
-              {/* Right - Image */}
-              <HeroImage
-                src="/images/sections/marketplace.webp"
-                alt="Online piactér értéktárgyakhoz"
-                icon={ShoppingBag}
-                title="Online Piactér"
-                subtitle="Biztonságos értékesítés"
-                className="relative h-[400px] rounded-lg overflow-hidden shadow-lg"
-              />
-            </div>
-
-            {/* Listings Showcase */}
-            <div className="border-t border-border pt-16">
-              <div className="text-center mb-12">
-                <h3 className="font-serif text-2xl md:text-3xl font-bold mb-4">Aktuális kínálatunk</h3>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Legújabb értéktárgyaink a piacterünkön. Minden darab szakértői becslés alapján kerül értékesítésre.
-                </p>
+              {/* Listings Showcase */}
+              <div className="border-t border-border pt-16">
+                <div className="text-center mb-12">
+                  <h3 className="font-serif text-2xl md:text-3xl font-bold mb-4">Aktuális kínálatunk</h3>
+                  <p className="text-muted-foreground max-w-2xl mx-auto">
+                    Legújabb értéktárgyaink a piacterünkön. Minden darab szakértői becslés alapján kerül értékesítésre.
+                  </p>
+                </div>
+                <ListingShowcase listings={listings} maxItems={4} />
               </div>
-              <ListingShowcase listings={listings} maxItems={4} />
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Services Grid */}
         <section className="py-16 md:py-24 bg-muted/30">

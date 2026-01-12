@@ -1,7 +1,9 @@
+import { notFound } from 'next/navigation';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { getPublicListingsCached } from '@/lib/listings-cached';
 import { ListingSearch } from '@/components/listings/ListingSearch';
+import { isMarketplaceEnabled } from '@/lib/feature-flags';
 
 export const metadata = {
   title: 'Piactér - Értéktárgyak',
@@ -9,6 +11,11 @@ export const metadata = {
 };
 
 export default async function PiacterPage() {
+  // Return 404 if marketplace feature is disabled
+  if (!isMarketplaceEnabled()) {
+    notFound();
+  }
+
   const listings = await getPublicListingsCached();
 
   return (
