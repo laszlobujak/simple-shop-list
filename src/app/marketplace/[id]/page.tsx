@@ -25,9 +25,10 @@ interface ListingPageProps {
 
 // Generate static params for all active/reserved listings at build time
 export async function generateStaticParams() {
-  // Return empty array if marketplace feature is disabled
+  // When marketplace is disabled, we still need to return at least one param
+  // for Next.js 16 Cache Components, but the page itself will return 404
   if (!isMarketplaceEnabled()) {
-    return [];
+    return [{ id: '__disabled__' }];
   }
 
   const listings = await getPublicListingsCached();
