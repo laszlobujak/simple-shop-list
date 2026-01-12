@@ -654,7 +654,7 @@ export default async function HomePage() {
                   Telefonon: <strong>+36 1 354 0555</strong>
                 </p>
                 <p className="mt-1">
-                  Email: <strong>info@ertekbecsles.hu</strong>
+                  Email: <strong>zalogfiok@hotmail.com</strong>
                 </p>
               </div>
             </div>
