@@ -8,7 +8,7 @@ import { HeroImage } from '@/components/ui/hero-image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { isMarketplaceEnabled } from '@/lib/feature-flags';
+import { isMarketplaceEnabled, isAIAppraisalEnabled } from '@/lib/feature-flags';
 import {
   Shield,
   Sparkles,
@@ -50,11 +50,15 @@ export default async function HomePage() {
       title: 'Fotó / űrlap elküldése',
       description: 'Küldjön fotót és alapadatokat tárgyáról kényelmesen, otthonról.',
     },
-    {
-      number: '2',
-      title: 'AI előzetes értékbecslés',
-      description: 'Gyors, tájékoztató jellegű értékbecslés perceken belül.',
-    },
+    ...(isAIAppraisalEnabled()
+      ? [
+          {
+            number: '2',
+            title: 'AI előzetes értékbecslés',
+            description: 'Gyors, tájékoztató jellegű értékbecslés perceken belül.',
+          },
+        ]
+      : []),
     {
       number: '3',
       title: 'Szakértői egyeztetés',
@@ -106,21 +110,25 @@ export default async function HomePage() {
       answer:
         'Szakértői csapatunk óra-ékszer becsüs, műtárgy becsüs, drágakő határozói és iparcikk becsüs képesítéssel rendelkezik. Több mint 20 éves piaci tapasztalattal garantáljuk az értékbecslések szakszerűségét és megbízhatóságát.',
     },
-    {
-      question: 'Mennyire pontos az AI értékbecslés?',
-      answer:
-        'Az AI alapú előzetes becslés tájékoztató jellegű, segít gyorsan felmérni tárgya körülbelüli értékét. A végső, pontos értéket mindig szakértőink állapítják meg személyesen, figyelembe véve az állapotot, ritkaságot és piaci keresletet.',
-    },
-    {
-      question: 'Mennyi idő az előzetes becslés?',
-      answer:
-        'Az AI alapú előzetes értékbecslést általában néhány percen belül elküldjük. A szakértői végleges becslés személyes egyeztetés után történik, amely 15-30 percet vesz igénybe.',
-    },
-    {
-      question: 'Mennyibe kerül az értékbecslés?',
-      answer:
-        'Az előzetes AI alapú becslés és az első konzultáció ingyenes. A részletes szakértői értékbecslés díja a tárgy típusától függ, de erről előzetesen mindig tájékoztatjuk Önt.',
-    },
+    ...(isAIAppraisalEnabled()
+      ? [
+          {
+            question: 'Mennyire pontos az AI értékbecslés?',
+            answer:
+              'Az AI alapú előzetes becslés tájékoztató jellegű, segít gyorsan felmérni tárgya körülbelüli értékét. A végső, pontos értéket mindig szakértőink állapítják meg személyesen, figyelembe véve az állapotot, ritkaságot és piaci keresletet.',
+          },
+          {
+            question: 'Mennyi idő az előzetes becslés?',
+            answer:
+              'Az AI alapú előzetes értékbecslést általában néhány percen belül elküldjük. A szakértői végleges becslés személyes egyeztetés után történik, amely 15-30 percet vesz igénybe.',
+          },
+          {
+            question: 'Mennyibe kerül az értékbecslés?',
+            answer:
+              'Az előzetes AI alapú becslés és az első konzultáció ingyenes. A részletes szakértői értékbecslés díja a tárgy típusától függ, de erről előzetesen mindig tájékoztatjuk Önt.',
+          },
+        ]
+      : []),
     {
       question: 'Hogyan zajlik a házhoz menő értékbecslés?',
       answer:
@@ -151,11 +159,14 @@ export default async function HomePage() {
               <div className="space-y-8">
                 <div className="space-y-4">
                   <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-balance leading-tight">
-                    AI-alapú értékbecslés - másodpercek alatt
+                    {isAIAppraisalEnabled()
+                      ? 'AI-alapú értékbecslés - másodpercek alatt'
+                      : 'Szakértői értékbecslés - több mint 20 éve'}
                   </h1>
                   <p className="text-lg md:text-xl text-muted-foreground text-pretty leading-relaxed">
-                    Töltse fel ékszere fotóját, és mesterséges intelligenciánk azonnal előzetes árajánlatot ad.
-                    Szakértőink személyesen is megerősítik a becslést.
+                    {isAIAppraisalEnabled()
+                      ? 'Töltse fel ékszere fotóját, és mesterséges intelligenciánk azonnal előzetes árajánlatot ad. Szakértőink személyesen is megerősítik a becslést.'
+                      : 'Hozza el ékszerét, óráját vagy értéktárgyát, és szakértőink pontos, megbízható értékbecslést készítenek. Zálog, felvásárlás, beszámítás.'}
                   </p>
                 </div>
 
@@ -181,9 +192,11 @@ export default async function HomePage() {
 
                 {/* CTAs */}
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="text-base md:text-lg px-8 py-6 bg-primary hover:bg-primary/90" asChild>
-                    <Link href="/ai-ertekbecslo">AI értékbecslés</Link>
-                  </Button>
+                  {isAIAppraisalEnabled() && (
+                    <Button size="lg" className="text-base md:text-lg px-8 py-6 bg-primary hover:bg-primary/90" asChild>
+                      <Link href="/ai-ertekbecslo">AI értékbecslés</Link>
+                    </Button>
+                  )}
                   <Button size="lg" variant="outline" className="text-base md:text-lg px-8 py-6 border-2 bg-transparent" asChild>
                     <Link href="#hazhoz-megyunk">
                       <Crown className="w-5 h-5 mr-2" />
@@ -316,74 +329,76 @@ export default async function HomePage() {
         </section>
 
         {/* AI Appraisal Explainer */}
-        <section id="ai-ertekbecsles" className="py-16 md:py-24 bg-card scroll-mt-20">
-          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Left - Image */}
-              <div className="order-2 lg:order-1">
-                <HeroImage
-                  src="/images/sections/ai-appraisal.webp"
-                  alt="AI technológia értékbecsléshez"
-                  icon={Sparkles}
-                  title="AI Technológia"
-                  subtitle="Gyors és pontos értékbecslés"
-                  className="relative h-[350px] rounded-lg overflow-hidden shadow-lg"
-                />
-              </div>
-
-              {/* Right - Content */}
-              <div className="order-1 lg:order-2 space-y-6">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/20 rounded-full">
-                  <Sparkles className="w-5 h-5 text-accent" />
-                  <span className="text-sm font-semibold text-accent-foreground">AI Technológia</span>
+        {isAIAppraisalEnabled() && (
+          <section id="ai-ertekbecsles" className="py-16 md:py-24 bg-card scroll-mt-20">
+            <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                {/* Left - Image */}
+                <div className="order-2 lg:order-1">
+                  <HeroImage
+                    src="/images/sections/ai-appraisal.webp"
+                    alt="AI technológia értékbecsléshez"
+                    icon={Sparkles}
+                    title="AI Technológia"
+                    subtitle="Gyors és pontos értékbecslés"
+                    className="relative h-[350px] rounded-lg overflow-hidden shadow-lg"
+                  />
                 </div>
 
-                <h2 className="font-serif text-3xl md:text-4xl font-bold">
-                  AI értékbecslés - gyors előzetes tájékoztatás
-                </h2>
+                {/* Right - Content */}
+                <div className="order-1 lg:order-2 space-y-6">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/20 rounded-full">
+                    <Sparkles className="w-5 h-5 text-accent" />
+                    <span className="text-sm font-semibold text-accent-foreground">AI Technológia</span>
+                  </div>
 
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  Mesterséges intelligencia alapú rendszerünk segít gyors, előzetes képet kapni értéktárgya körülbelüli
-                  értékéről.
-                </p>
+                  <h2 className="font-serif text-3xl md:text-4xl font-bold">
+                    AI értékbecslés - gyors előzetes tájékoztatás
+                  </h2>
 
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
-                    <span>
-                      <strong>Gyors:</strong> Perceken belül válaszolunk
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
-                    <span>
-                      <strong>Kényelmes:</strong> Otthonról, fotó alapján
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
-                    <span>
-                      <strong>Tájékoztató:</strong> Segít felmérni a lehetőségeket
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
-                    <span>
-                      <strong>Szakértői kontroll:</strong> Mindig ember ellenőrzi
-                    </span>
-                  </li>
-                </ul>
-
-                <div className="pt-4">
-                  <p className="text-sm text-muted-foreground italic border-l-4 border-accent pl-4">
-                    Az AI becslés kiindulópont. A végleges értéket tapasztalt szakértőink határozzák meg személyes
-                    vizsgálat után.
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    Mesterséges intelligencia alapú rendszerünk segít gyors, előzetes képet kapni értéktárgya körülbelüli
+                    értékéről.
                   </p>
+
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                      <span>
+                        <strong>Gyors:</strong> Perceken belül válaszolunk
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                      <span>
+                        <strong>Kényelmes:</strong> Otthonról, fotó alapján
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                      <span>
+                        <strong>Tájékoztató:</strong> Segít felmérni a lehetőségeket
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-1" />
+                      <span>
+                        <strong>Szakértői kontroll:</strong> Mindig ember ellenőrzi
+                      </span>
+                    </li>
+                  </ul>
+
+                  <div className="pt-4">
+                    <p className="text-sm text-muted-foreground italic border-l-4 border-accent pl-4">
+                      Az AI becslés kiindulópont. A végleges értéket tapasztalt szakértőink határozzák meg személyes
+                      vizsgálat után.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* VIP Home Visit */}
         <section id="hazhoz-megyunk" className="py-16 md:py-24 bg-accent/10 border-y-2 border-accent/30">

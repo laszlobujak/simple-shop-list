@@ -14,3 +14,13 @@ import { env } from '@/env.mjs';
 export function isMarketplaceEnabled(): boolean {
   return env.NEXT_PUBLIC_ENABLE_MARKETPLACE;
 }
+
+/**
+ * Check if the AI appraisal feature is enabled.
+ * Controlled by NEXT_PUBLIC_ENABLE_AI_APPRAISAL environment variable.
+ *
+ * @returns {boolean} true if AI appraisal is enabled, false otherwise
+ */
+export function isAIAppraisalEnabled(): boolean {
+  return env.NEXT_PUBLIC_ENABLE_AI_APPRAISAL;
+}

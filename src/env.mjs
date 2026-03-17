@@ -57,6 +57,12 @@ export const env = createEnv({
       .transform((val) => val === 'true')
       .pipe(z.boolean())
       .default(false),
+    NEXT_PUBLIC_ENABLE_AI_APPRAISAL: z
+      .string()
+      .optional()
+      .transform((val) => val === 'true')
+      .pipe(z.boolean())
+      .default(false),
   },
 
   /**
@@ -100,6 +106,7 @@ export const env = createEnv({
     NEXT_PUBLIC_BETTER_AUTH_URL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
     // Feature Flags
     NEXT_PUBLIC_ENABLE_MARKETPLACE: process.env.NEXT_PUBLIC_ENABLE_MARKETPLACE,
+    NEXT_PUBLIC_ENABLE_AI_APPRAISAL: process.env.NEXT_PUBLIC_ENABLE_AI_APPRAISAL,
   },
   /**
    * Run `build` or `dev` with SKIP_ENV_VALIDATION to skip env validation. This is especially

@@ -15,6 +15,7 @@ import {
   Award,
   ExternalLink,
 } from "lucide-react";
+import { isAIAppraisalEnabled } from "@/lib/feature-flags";
 
 export const metadata: Metadata = {
   title: "Kapcsolat - Értékbecslés & Zálog",
@@ -252,12 +253,14 @@ export default function ContactPage() {
                 <Phone className="w-6 h-6" />
                 {phone.display}
               </a>
-              <Link
-                href="/ai-ertekbecslo"
-                className="inline-flex items-center justify-center gap-2 bg-primary-foreground/10 text-primary-foreground px-8 py-4 rounded-lg text-xl font-medium hover:bg-primary-foreground/20 transition-colors border border-primary-foreground/20"
-              >
-                Online AI értékbecslés
-              </Link>
+              {isAIAppraisalEnabled() && (
+                <Link
+                  href="/ai-ertekbecslo"
+                  className="inline-flex items-center justify-center gap-2 bg-primary-foreground/10 text-primary-foreground px-8 py-4 rounded-lg text-xl font-medium hover:bg-primary-foreground/20 transition-colors border border-primary-foreground/20"
+                >
+                  Online AI értékbecslés
+                </Link>
+              )}
             </div>
 
             <p className="text-sm opacity-70">

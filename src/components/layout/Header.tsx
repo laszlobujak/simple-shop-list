@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { Phone } from "lucide-react";
 import { MobileMenuToggle } from "./MobileMenuToggle";
-import { isMarketplaceEnabled } from "@/lib/feature-flags";
+import { isMarketplaceEnabled, isAIAppraisalEnabled } from "@/lib/feature-flags";
 
 const ALL_NAV_LINKS = [
-  { href: "/ai-ertekbecslo", label: "AI értékbecslés" },
+  { href: "/ai-ertekbecslo", label: "AI értékbecslés", requiresAIAppraisal: true },
   { href: "/piacter", label: "Piactér", requiresMarketplace: true },
   { href: "/kapcsolat", label: "Kapcsolat" },
 ];
@@ -14,7 +14,9 @@ const PHONE_NUMBER = "+36 1 354 0555";
 export function Header() {
   // Filter navigation links based on feature flags
   const NAV_LINKS = ALL_NAV_LINKS.filter(
-    (link) => !link.requiresMarketplace || isMarketplaceEnabled()
+    (link) =>
+      (!link.requiresMarketplace || isMarketplaceEnabled()) &&
+      (!link.requiresAIAppraisal || isAIAppraisalEnabled())
   );
   return (
     <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">

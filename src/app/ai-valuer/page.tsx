@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { AIAppraisalForm } from "@/components/ai-appraisal/AIAppraisalForm";
+import { isAIAppraisalEnabled } from "@/lib/feature-flags";
 
 export const metadata: Metadata = {
   title: "AI Értékbecslés - Ékszer Értékbecslő",
@@ -23,6 +25,10 @@ export const metadata: Metadata = {
 };
 
 export default function AIAppraisalPage() {
+  if (!isAIAppraisalEnabled()) {
+    notFound();
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
