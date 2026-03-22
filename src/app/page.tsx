@@ -20,6 +20,10 @@ import {
   MessageCircle,
   Phone,
   MapPin,
+  BadgeCheck,
+  Star,
+  AlertCircle,
+  TrendingDown,
 } from 'lucide-react';
 
 export default async function HomePage() {
@@ -402,94 +406,237 @@ export default async function HomePage() {
 
         {/* VIP Home Visit */}
         <section id="hazhoz-megyunk" className="py-16 md:py-24 bg-accent/10 border-y-2 border-accent/30">
-          <div className="container mx-auto px-4 md:px-6 max-w-5xl">
-            <div className="text-center space-y-6">
+          <div className="container mx-auto px-4 md:px-6 max-w-5xl space-y-12">
+
+            {/* Header */}
+            <div className="text-center space-y-5">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent rounded-full">
                 <Crown className="w-5 h-5 text-accent-foreground" />
                 <span className="text-sm font-bold text-accent-foreground">VIP Szolgáltatás</span>
               </div>
-
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold">Házhoz megy az értékbecslő</h2>
-
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold">
+                Helyszíni arany- és ékszerfelvásárlás
+              </h2>
               <p className="text-lg text-foreground/90 max-w-3xl mx-auto leading-relaxed">
-                Szakértőnk Önhöz látogat - előre egyeztetett időpontban, diszkréten, biztonságosan.
+                Korrekt, biztonságos megoldás — szakértőnk Önhöz látogat, előre egyeztetett időpontban, diszkréten.{' '}
+                <strong>Elsőként bevezetett, különleges szolgáltatás az országban.</strong>
               </p>
 
-              {/* Two Options Grid */}
-              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto pt-8">
-                {/* Option 1: Gold Purchase */}
-                <Card className="border-2 border-accent/50 bg-background">
-                  <CardContent className="p-8 text-center space-y-4">
-                    <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto">
-                      <Coins className="w-8 h-8 text-accent" />
+              {/* Trust Badges */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto pt-2">
+                <div className="flex flex-col items-center gap-2 p-4 bg-background rounded-xl border border-accent/30">
+                  <Star className="w-6 h-6 text-accent" />
+                  <span className="text-sm font-semibold text-center">2001 óta a piacon</span>
+                </div>
+                <div className="flex flex-col items-center gap-2 p-4 bg-background rounded-xl border border-accent/30">
+                  <BadgeCheck className="w-6 h-6 text-accent" />
+                  <span className="text-sm font-semibold text-center">Ellenőrizhető, megbízható</span>
+                </div>
+                <div className="flex flex-col items-center gap-2 p-4 bg-background rounded-xl border border-accent/30">
+                  <Shield className="w-6 h-6 text-accent" />
+                  <span className="text-sm font-semibold text-center">Hatóságilag nyilvántartott</span>
+                </div>
+                <div className="flex flex-col items-center gap-2 p-4 bg-background rounded-xl border border-accent/30">
+                  <MapPin className="w-6 h-6 text-accent" />
+                  <span className="text-sm font-semibold text-center">Elsőként bevezetett, különleges szolgáltatás</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Kinek ajánljuk */}
+            <div className="bg-background rounded-2xl border border-accent/30 p-6 md:p-8 max-w-3xl mx-auto w-full">
+              <p className="font-semibold text-foreground mb-3">Kinek ajánljuk ezt a szolgáltatást?</p>
+              <p className="text-muted-foreground text-sm mb-4">
+                Szolgáltatásunkat elsősorban azoknak ajánljuk, akik egészségi állapotuk, életkoruk vagy személyes körülményeik miatt nem tudnak vagy nem szeretnének üzletbe látogatni.
+              </p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
+                  <span>Idős vagy mozgáskorlátozottak számára</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
+                  <span>Akik biztonságos, diszkrét ügyintézést keresnek</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
+                  <span>Nagyobb mennyiségű vagy nehezen szállítható tárgyak esetén</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Hogyan működik */}
+            <div className="space-y-4 max-w-3xl mx-auto w-full">
+              <h3 className="font-serif text-2xl font-bold text-center">Hogyan működik?</h3>
+              <div className="grid gap-3">
+                {[
+                  {
+                    n: '1',
+                    title: 'Előzetes egyeztetés',
+                    desc: 'Telefonon vagy e-mailben időpontot egyeztetünk, minden esetben konkrét megbízás alapján.',
+                  },
+                  {
+                    n: '2',
+                    title: 'Helyszíni felmérés',
+                    desc: 'Kollégáink professzionális eszközökkel (mérleg, savas vizsgálat, szakértői tapasztalat) vizsgálják meg az ékszereket.',
+                  },
+                  {
+                    n: '3',
+                    title: 'Írásos jegyzőkönyv',
+                    desc: 'A vizsgálatról és az ajánlatról tételes jegyzőkönyv készül: leírás, súly, becsült finomság, ajánlott vételár.',
+                  },
+                  {
+                    n: '4',
+                    title: 'Szabad döntés',
+                    desc: 'Az ajánlat nem kötelező érvényű. Ügyfeleink nyugodt körülmények között, nyomás nélkül dönthetnek.',
+                  },
+                  {
+                    n: '5',
+                    title: 'Azonnali kifizetés',
+                    desc: 'Megállapodás esetén a vételárat készpénzben vagy azonnali banki átutalással fizetjük ki.',
+                  },
+                ].map((step) => (
+                  <div key={step.n} className="flex gap-4 items-start bg-background rounded-xl border border-accent/20 p-4">
+                    <div className="flex-shrink-0 w-9 h-9 bg-accent rounded-full flex items-center justify-center">
+                      <span className="text-accent-foreground font-bold text-sm">{step.n}</span>
                     </div>
-                    <h3 className="font-serif text-2xl font-bold">Arany felvásárlás helyben</h3>
+                    <div>
+                      <p className="font-semibold text-foreground">{step.title}</p>
+                      <p className="text-sm text-muted-foreground mt-0.5">{step.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Cost Info Banner */}
+            <div className="flex flex-col sm:flex-row items-start gap-4 max-w-3xl mx-auto w-full bg-background border-2 border-accent/40 rounded-2xl p-5">
+              <div className="flex-shrink-0 w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center">
+                <AlertCircle className="w-6 h-6 text-accent-foreground" />
+              </div>
+              <div className="space-y-1">
+                <p className="font-semibold text-foreground">Ez nem ingyenes szolgáltatás</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  A kiszállás díjköteles — azonban{' '}
+                  <strong className="text-foreground">30 000 Ft értékig történő vásárlás esetén a kiszállás költsége teljes mértékben beszámításra kerül</strong>{' '}
+                  a vételárba.
+                </p>
+              </div>
+            </div>
+
+            {/* Cards */}
+            <div className={`grid gap-8 max-w-4xl mx-auto w-full ${isMarketplaceEnabled() ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
+              {/* Option 1: Gold Purchase */}
+              <Card className="border-2 border-accent/50 bg-background">
+                <CardContent className="p-8 text-center space-y-4">
+                  <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto">
+                    <Coins className="w-8 h-8 text-accent" />
+                  </div>
+                  <h3 className="font-serif text-2xl font-bold">Arany felvásárlás helyben</h3>
+                  <p className="text-muted-foreground">
+                    Arany ékszereit helyben, az Ön otthonában vásároljuk fel. Azonnali készpénzfizetés, átlátható árazás.
+                  </p>
+                  <ul className="text-sm text-left space-y-2 pt-2">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
+                      <span>Azonnali készpénz vagy banki átutalás</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
+                      <span>Világpiaci áron számolunk</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
+                      <span>Helyszíni mérés és savas vizsgálat</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <TrendingDown className="w-4 h-4 text-accent flex-shrink-0" />
+                      <span className="font-medium">30 000 Ft vásárlásnál a kiszállás díja nulla</span>
+                    </li>
+                  </ul>
+                  <Button size="lg" className="w-full mt-4" asChild>
+                    <a href="tel:+36209522665">
+                      <Phone className="w-5 h-5 mr-2" />
+                      Időpontot kérek: +36 20 952 2665
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Option 2: Marketplace */}
+              {isMarketplaceEnabled() && (
+                <Card className="border-2 border-primary/30 bg-background">
+                  <CardContent className="p-8 text-center space-y-4">
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                      <ShoppingBag className="w-8 h-8 text-primary" />
+                    </div>
+                    <h3 className="font-serif text-2xl font-bold">Nagyobb ingóságok piactéren</h3>
                     <p className="text-muted-foreground">
-                      Arany ékszereit helyben, az Ön otthonában vásároljuk fel. Azonnali készpénzfizetés, átlátható árazás.
+                      Bútorok, festmények, műtárgyak, gyűjtemények - segítünk a piactéren keresztül értékesíteni.
                     </p>
                     <ul className="text-sm text-left space-y-2 pt-2">
                       <li className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
-                        <span>Azonnali készpénz</span>
+                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                        <span>Professzionális fotózás</span>
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
-                        <span>Világpiaci áron számolunk</span>
+                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                        <span>Hirdetés a piacterünkön</span>
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0" />
-                        <span>Helyszíni mérés és vizsgálat</span>
+                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                        <span>Magasabb eladási ár lehetséges</span>
                       </li>
                     </ul>
-                    <Button size="lg" className="w-full mt-4" asChild>
-                      <Link href="/kapcsolat">
-                        <Phone className="w-5 h-5 mr-2" />
-                        Időpontot kérek
+                    <Button size="lg" variant="outline" className="w-full mt-4 border-2" asChild>
+                      <Link href="/piacter">
+                        <ShoppingBag className="w-5 h-5 mr-2" />
+                        Piactér megtekintése
                       </Link>
                     </Button>
                   </CardContent>
                 </Card>
-
-                {/* Option 2: Marketplace */}
-                {isMarketplaceEnabled() && (
-                  <Card className="border-2 border-primary/30 bg-background">
-                    <CardContent className="p-8 text-center space-y-4">
-                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                        <ShoppingBag className="w-8 h-8 text-primary" />
-                      </div>
-                      <h3 className="font-serif text-2xl font-bold">Nagyobb ingóságok piactéren</h3>
-                      <p className="text-muted-foreground">
-                        Bútorok, festmények, műtárgyak, gyűjtemények - segítünk a piactéren keresztül értékesíteni.
-                      </p>
-                      <ul className="text-sm text-left space-y-2 pt-2">
-                        <li className="flex items-center gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                          <span>Professzionális fotózás</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                          <span>Hirdetés a piacterünkön</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                          <span>Magasabb eladási ár lehetséges</span>
-                        </li>
-                      </ul>
-                      <Button size="lg" variant="outline" className="w-full mt-4 border-2" asChild>
-                        <Link href="/piacter">
-                          <ShoppingBag className="w-5 h-5 mr-2" />
-                          Piactér megtekintése
-                        </Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                )}
-              </div>
-
-              <p className="text-sm text-muted-foreground italic pt-6">
-                Biztonság: Szakértőink azonosító igazolvánnyal érkeznek. Minden értékbecslésről írásos dokumentumot adunk.
-              </p>
+              )}
             </div>
+
+            {/* Fontos tudnivalók + Diszkréció */}
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto w-full">
+              <div className="bg-background rounded-2xl border border-border p-6 space-y-3">
+                <p className="font-semibold text-foreground">Fontos tudnivalók</p>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Nem mozgóárusítás — minden kiszállás előzetes megrendelés alapján, konkrét ügyfélhez történik</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Kizárólag felvásárlást végzünk, helyszínen nem értékesítünk</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Tevékenységünk a Budapest Főváros Kormányhivatala nyilvántartásában szerepel</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="bg-background rounded-2xl border border-border p-6 space-y-3">
+                <p className="font-semibold text-foreground">Diszkréció és bizalom</p>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <Shield className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Ügyfelei adatainak védelme kiemelten fontos számunkra</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Shield className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Diszkrét, korrekt és átlátható elszámolás minden esetben</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Shield className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Szakértőink azonosító igazolvánnyal érkeznek, írásos dokumentumot adunk</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
           </div>
         </section>
 
