@@ -8,7 +8,6 @@ import {
   HandCoins,
   HandHeart,
   Home,
-  MapPin,
   Phone,
   Recycle,
   Scale,
@@ -19,6 +18,7 @@ import {
 import {
   Eyebrow,
   LandingHeader,
+  CONTACTS,
   PHONE,
   PhotoPanel,
 } from '@/components/otthonrendezes/LandingChrome';
@@ -28,7 +28,7 @@ import { QuoteForm } from '@/components/otthonrendezes/QuoteForm';
 export const metadata: Metadata = {
   title: 'Otthonrendezés és ingatlan-előkészítés',
   description:
-    'A válogatástól és értékfelméréstől a teljes kiürítésen, takarításon át egészen a festésig. Budapest és Pest vármegye, 2001 óta.',
+    'A válogatástól és értékfelméréstől a teljes kiürítésen, takarításon át egészen a festésig. 2001 óta.',
   alternates: { canonical: '/otthonrendezes' },
 };
 
@@ -172,9 +172,6 @@ export default function HomePreparationPage() {
                 <CallCta />
               </div>
               <ul className="mt-8 flex flex-col gap-3 text-sm text-plum-ink/70 sm:flex-row sm:gap-6">
-                <li className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4" /> Budapest és Pest vármegye
-                </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4" /> Egy kézben, az első lépéstől az átadásig
                 </li>
@@ -498,17 +495,21 @@ export default function HomePreparationPage() {
                 </div>
                 <div className="relative mt-12 border-t border-white/15 pt-8">
                   <p className="text-sm text-white/70">Telefonon is elér minket</p>
-                  <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-3">
-                    <a
-                      href={`tel:${PHONE.href}`}
-                      className="flex items-center gap-3 font-serif text-2xl hover:underline"
-                    >
-                      <Phone className="h-5 w-5" /> {PHONE.display}
-                    </a>
-                    <span className="flex items-center gap-2 text-sm text-white/70">
-                      <MapPin className="h-4 w-4" /> Budapest és Pest vármegye
-                    </span>
-                  </div>
+                  <ul className="mt-4 space-y-3">
+                    {CONTACTS.map((c, i) => (
+                      <li key={c.href}>
+                        <a
+                          href={`tel:${c.href}`}
+                          className="flex items-center gap-3 hover:underline"
+                        >
+                          <Phone className={i === 0 ? 'h-5 w-5' : 'h-4 w-4 text-white/70'} />
+                          <span className={i === 0 ? 'font-serif text-2xl' : 'font-serif text-xl text-white/85'}>
+                            {c.display}
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
 

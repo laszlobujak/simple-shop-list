@@ -2,9 +2,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Home, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { contactInfo } from '@/data/contactInfo';
 
-export const PHONE = contactInfo.phone;
+// Contacts for the home-preparation service (separate from the pawn shop line).
+// The first one is primary: every "Hívjon minket" button calls it.
+export const CONTACTS = [
+  { name: 'András', display: '06 30 694 4299', href: '+36306944299' },
+  { name: 'Évi', display: '+36 20 952 2665', href: '+36209522665' },
+] as const;
+
+export const PHONE = CONTACTS[0];
 
 export function LandingHeader() {
   return (
