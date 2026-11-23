@@ -72,6 +72,26 @@ export default {
         cream: "hsl(var(--cream))",
         charcoal: "hsl(var(--charcoal))",
         "warm-gray": "hsl(var(--warm-gray))",
+        // Otthonrendezés landing palette
+        plum: {
+          DEFAULT: "#3E3549",
+          deep: "#322B3A",
+          ink: "#2B2633",
+          soft: "#6E5B79",
+          mist: "#EFEAF0",
+          haze: "#F2EEF2",
+        },
+        linen: {
+          DEFAULT: "#FAF8F6",
+          warm: "#F3EFEB",
+          taupe: "#E0D7D0",
+        },
+        sage: {
+          DEFAULT: "#E9EDE7",
+          deep: "#D9E0D6",
+          ink: "#5E6E5C",
+        },
+        bronze: "#9A7A5B",
       },
       borderRadius: {
         lg: "var(--radius)",
