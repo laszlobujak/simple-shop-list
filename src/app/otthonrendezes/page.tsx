@@ -19,6 +19,7 @@ import {
 import {
   Eyebrow,
   LandingHeader,
+  CONTACTS,
   PHONE,
   PhotoPanel,
 } from '@/components/otthonrendezes/LandingChrome';
@@ -498,17 +499,24 @@ export default function HomePreparationPage() {
                 </div>
                 <div className="relative mt-12 border-t border-white/15 pt-8">
                   <p className="text-sm text-white/70">Telefonon is elér minket</p>
-                  <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-3">
-                    <a
-                      href={`tel:${PHONE.href}`}
-                      className="flex items-center gap-3 font-serif text-2xl hover:underline"
-                    >
-                      <Phone className="h-5 w-5" /> {PHONE.display}
-                    </a>
-                    <span className="flex items-center gap-2 text-sm text-white/70">
-                      <MapPin className="h-4 w-4" /> Budapest és Pest vármegye
-                    </span>
-                  </div>
+                  <ul className="mt-4 space-y-3">
+                    {CONTACTS.map((c, i) => (
+                      <li key={c.href}>
+                        <a
+                          href={`tel:${c.href}`}
+                          className="flex items-center gap-3 hover:underline"
+                        >
+                          <Phone className={i === 0 ? 'h-5 w-5' : 'h-4 w-4 text-white/70'} />
+                          <span className={i === 0 ? 'font-serif text-2xl' : 'font-serif text-xl text-white/85'}>
+                            {c.display}
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-5 flex items-center gap-2 text-sm text-white/70">
+                    <MapPin className="h-4 w-4" /> Budapest és Pest vármegye
+                  </p>
                 </div>
               </div>
 
