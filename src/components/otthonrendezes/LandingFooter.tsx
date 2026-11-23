@@ -12,7 +12,6 @@ export function LandingFooter() {
             <Link href="/adatvedelem" className="border-b border-white/30 hover:text-white">
               Adatkezelési tájékoztató
             </Link>
-            <span>Budapest és Pest vármegye</span>
           </div>
         </div>
       </div>

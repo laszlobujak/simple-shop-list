@@ -8,7 +8,6 @@ import {
   HandCoins,
   HandHeart,
   Home,
-  MapPin,
   Phone,
   Recycle,
   Scale,
@@ -29,7 +28,7 @@ import { QuoteForm } from '@/components/otthonrendezes/QuoteForm';
 export const metadata: Metadata = {
   title: 'Otthonrendezés és ingatlan-előkészítés',
   description:
-    'A válogatástól és értékfelméréstől a teljes kiürítésen, takarításon át egészen a festésig. Budapest és Pest vármegye, 2001 óta.',
+    'A válogatástól és értékfelméréstől a teljes kiürítésen, takarításon át egészen a festésig. 2001 óta.',
   alternates: { canonical: '/otthonrendezes' },
 };
 
@@ -173,9 +172,6 @@ export default function HomePreparationPage() {
                 <CallCta />
               </div>
               <ul className="mt-8 flex flex-col gap-3 text-sm text-plum-ink/70 sm:flex-row sm:gap-6">
-                <li className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4" /> Budapest és Pest vármegye
-                </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4" /> Egy kézben, az első lépéstől az átadásig
                 </li>
@@ -514,9 +510,6 @@ export default function HomePreparationPage() {
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-5 flex items-center gap-2 text-sm text-white/70">
-                    <MapPin className="h-4 w-4" /> Budapest és Pest vármegye
-                  </p>
                 </div>
               </div>
 
